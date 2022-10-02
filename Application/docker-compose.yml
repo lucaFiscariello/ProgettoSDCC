@@ -1,0 +1,119 @@
+version: "3.9"
+services:
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: wurstmeister/kafka
+    container_name: broker
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+      KAFKA_CREATE_TOPICS: "presentation:1:1,heartbeat:1:1,tokenCheck:1:1,start:1:1"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+  webserver:
+      hostname: webServer
+      container_name: webServer
+      build: ./WebServer
+      ports:
+        - 8080:8080
+      environment:
+          PORT : ":50051"
+          START_TOPIC : "start"
+          PORT_KAFKA : ":29092"
+          IP_KAFKA : "broker"
+
+
+  node1:
+      hostname: node1
+      container_name: node1
+      build: ./Node
+      environment:
+          TIMEOUT : 20
+          TEMA : calcio
+          ID_NODE : node1
+          APIKEY : 621d12b7ec5940a380a2b9b249329ff9
+          URLTEMPLATE : http://newsapi.org/v2/everything?q=%s&apiKey=%s&language=it 
+          PORT_KAFKA : ":29092"
+          IP_KAFKA : "broker"
+          PRESENTATION_TOPIC : "presentation"
+          HEARTBEAT_TOPIC : "heartbeat"
+          TOKENCHECK_TOPIC : "tokenCheck"
+          START_TOPIC : "start"
+          HAVE_TOKEN : "YES"
+          ID_WS : "webServer:50051"
+      depends_on:
+        - broker
+        - webserver
+
+ 
+
+  node2:
+      hostname: node2
+      container_name: node2
+      build: ./Node
+      environment:
+          TIMEOUT : 20
+          TEMA : politica
+          ID_NODE : node2
+          APIKEY : 621d12b7ec5940a380a2b9b249329ff9
+          URLTEMPLATE : http://newsapi.org/v2/everything?q=%s&apiKey=%s&language=it 
+          PORT_KAFKA : ":29092"
+          IP_KAFKA : "broker"
+          PRESENTATION_TOPIC : "presentation"
+          HEARTBEAT_TOPIC : "heartbeat"
+          TOKENCHECK_TOPIC : "tokenCheck"
+          START_TOPIC : "start"
+          HAVE_TOKEN : "NO"
+          ID_WS : "webServer:50051"
+      depends_on:
+        - broker
+        - webserver
+
+  node3:
+      hostname: node3
+      container_name: node3
+      build: ./Node
+      environment:
+          TIMEOUT : 20
+          TEMA : natura
+          ID_NODE : node3
+          APIKEY : 621d12b7ec5940a380a2b9b249329ff9
+          URLTEMPLATE : http://newsapi.org/v2/everything?q=%s&apiKey=%s&language=it 
+          PORT_KAFKA : ":29092"
+          IP_KAFKA : "broker"
+          PRESENTATION_TOPIC : "presentation"
+          HEARTBEAT_TOPIC : "heartbeat"
+          TOKENCHECK_TOPIC : "tokenCheck"
+          START_TOPIC : "start"
+          HAVE_TOKEN : "NO"
+          ID_WS : "webServer:50051"
+      depends_on:
+        - broker
+        - webserver
+  
+  
+
+
+
+
+
+    
+    
+    
