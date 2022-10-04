@@ -28,6 +28,8 @@ type Article struct {
 	Title       string `protobuf:"bytes,1,opt,name=Title,proto3" json:"Title,omitempty"`
 	Description string `protobuf:"bytes,2,opt,name=Description,proto3" json:"Description,omitempty"`
 	UrlToImage  string `protobuf:"bytes,3,opt,name=UrlToImage,proto3" json:"UrlToImage,omitempty"`
+	UrlSite  string `protobuf:"bytes,4,opt,name=UrlSite,proto3" json:"UrlSite,omitempty"`
+
 }
 
 func (x *Article) Reset() {
@@ -79,6 +81,13 @@ func (x *Article) GetDescription() string {
 func (x *Article) GetUrlToImage() string {
 	if x != nil {
 		return x.UrlToImage
+	}
+	return ""
+}
+
+func (x *Article) GetUrlSite() string {
+	if x != nil {
+		return x.UrlSite
 	}
 	return ""
 }

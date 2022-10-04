@@ -26,7 +26,7 @@ func main() {
 	sender = S.Sender{NewConnection: true}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./webSite/site.html")
+		http.ServeFile(w, r, "./webSite/index.html")
 	})
 
 	http.HandleFunc("/Connection/WebSocket", func(w http.ResponseWriter, r *http.Request) {

@@ -27,6 +27,8 @@ FROM scratch
 # Copy our static executable.
 COPY --from=builder /app/main /app/main
 COPY --from=builder /app/webSite /webSite/
+COPY --from=builder /app/webSite/images /webSite/images
+COPY --from=builder /app/webSite/blog /webSite/blog
 
 # Run the hello binary.
 ENTRYPOINT ["/app/main"]

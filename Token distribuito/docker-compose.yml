@@ -40,14 +40,14 @@ services:
           IP_KAFKA : "broker"
 
 
-  node1:
-      hostname: node1
-      container_name: node1
+  node0:
+      hostname: node0
+      container_name: node0
       build: ./Node
       environment:
           TIMEOUT : 20
           TEMA : calcio
-          ID_NODE : node1
+          ID_NODE : node0
           APIKEY : 621d12b7ec5940a380a2b9b249329ff9
           URLTEMPLATE : http://newsapi.org/v2/everything?q=%s&apiKey=%s&language=it 
           PORT_KAFKA : ":29092"
@@ -64,14 +64,14 @@ services:
 
  
 
-  node2:
-      hostname: node2
-      container_name: node2
+  node1:
+      hostname: node1
+      container_name: node1
       build: ./Node
       environment:
           TIMEOUT : 20
-          TEMA : politica
-          ID_NODE : node2
+          TEMA : natura
+          ID_NODE : node1
           APIKEY : 621d12b7ec5940a380a2b9b249329ff9
           URLTEMPLATE : http://newsapi.org/v2/everything?q=%s&apiKey=%s&language=it 
           PORT_KAFKA : ":29092"
@@ -86,14 +86,14 @@ services:
         - broker
         - webserver
 
-  node3:
-      hostname: node3
-      container_name: node3
+  node2:
+      hostname: node2
+      container_name: node2
       build: ./Node
       environment:
           TIMEOUT : 20
-          TEMA : natura
-          ID_NODE : node3
+          TEMA : bitcoin
+          ID_NODE : node2
           APIKEY : 621d12b7ec5940a380a2b9b249329ff9
           URLTEMPLATE : http://newsapi.org/v2/everything?q=%s&apiKey=%s&language=it 
           PORT_KAFKA : ":29092"
