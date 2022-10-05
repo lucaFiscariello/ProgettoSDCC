@@ -15,15 +15,18 @@ type HeartBeatHandler struct {
 }
 
 type Message struct {
-	TypeMessage string `json:"TypeMessage"`
-	Id_node     string `json:"Id_node"`
-	Id_message  int    `json:"Id_message"`
+	TypeMessage  string `json:"TypeMessage"`
+	Id_node      string `json:"Id_node"`
+	Id_message   int    `json:"Id_message"`
+	ConcessToken bool   `json:"ConcessToken"`
 }
 
 const (
-	messageType string = "messageType"
-	HeartBeat          = "HeartBeat"
-	Token              = "Token"
+	messageType  string = "messageType"
+	HeartBeat           = "HeartBeat"
+	Token               = "Token"
+	TokenRequest        = "TokenRequest"
+	TokenCheck          = "TokenCheck"
 )
 
 type HandlerHB interface {

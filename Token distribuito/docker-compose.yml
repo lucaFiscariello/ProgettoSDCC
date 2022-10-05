@@ -20,7 +20,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://broker:29092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
-      KAFKA_CREATE_TOPICS: "presentation:1:1,heartbeat:1:1,tokenCheck:1:1,start:1:1"
+      KAFKA_CREATE_TOPICS: "presentation:1:1,heartbeat:1:1,start:1:1,tokenRequest:1:1"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -39,6 +39,17 @@ services:
           PORT_KAFKA : ":29092"
           IP_KAFKA : "broker"
 
+  token_generator:
+      hostname: token_generator
+      container_name: token_generator
+      build: ./TokenGenerator
+      environment:
+          TIMEOUT : 20
+          ID_KAFKA : "broker:29092"
+          TOKENREQUEST_TOPIC : "tokenRequest"
+      depends_on:
+        - broker
+        - webserver
 
   node0:
       hostname: node0
@@ -54,15 +65,13 @@ services:
           IP_KAFKA : "broker"
           PRESENTATION_TOPIC : "presentation"
           HEARTBEAT_TOPIC : "heartbeat"
-          TOKENCHECK_TOPIC : "tokenCheck"
+          TOKEN_REQUEST_TOPIC : "tokenRequest"
           START_TOPIC : "start"
           HAVE_TOKEN : "YES"
           ID_WS : "webServer:50051"
       depends_on:
         - broker
         - webserver
-
- 
 
   node1:
       hostname: node1
@@ -78,7 +87,7 @@ services:
           IP_KAFKA : "broker"
           PRESENTATION_TOPIC : "presentation"
           HEARTBEAT_TOPIC : "heartbeat"
-          TOKENCHECK_TOPIC : "tokenCheck"
+          TOKEN_REQUEST_TOPIC : "tokenRequest"
           START_TOPIC : "start"
           HAVE_TOKEN : "NO"
           ID_WS : "webServer:50051"
@@ -100,7 +109,7 @@ services:
           IP_KAFKA : "broker"
           PRESENTATION_TOPIC : "presentation"
           HEARTBEAT_TOPIC : "heartbeat"
-          TOKENCHECK_TOPIC : "tokenCheck"
+          TOKEN_REQUEST_TOPIC : "tokenRequest"
           START_TOPIC : "start"
           HAVE_TOKEN : "NO"
           ID_WS : "webServer:50051"

@@ -13,12 +13,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-const (
-	HaveToken string = "HaveToken"
-	YES              = "YES"
-	NO               = "NO"
-)
-
 var ALL_ARTICLE H.Data
 var ALL_NODE map[string]bool = make(map[string]bool)
 
@@ -27,7 +21,7 @@ var IP_KAFKA = os.Getenv("IP_KAFKA")
 var PORT_KAFKA = os.Getenv("PORT_KAFKA")
 var PRESENTATION_TOPIC = os.Getenv("PRESENTATION_TOPIC")
 var HEARTBEAT_TOPIC = os.Getenv("HEARTBEAT_TOPIC")
-var TOKENCHECK_TOPIC = os.Getenv("TOKENCHECK_TOPIC")
+var TOKEN_REQUEST_TOPIC = os.Getenv("TOKEN_REQUEST_TOPIC")
 var ID_NODE = os.Getenv("ID_NODE")
 var TOKEN = os.Getenv("HAVE_TOKEN")
 var TEMA = os.Getenv("TEMA")
@@ -42,10 +36,22 @@ func main() {
 
 	waitStartNode()
 
+	configWrite := kafka.WriterConfig{
+		Brokers: []string{URLKAFKA},
+		Topic:   TOKEN_REQUEST_TOPIC}
+
+	configRead := kafka.ReaderConfig{
+		Brokers:  []string{URLKAFKA},
+		Topic:    ID_NODE,
+		MaxBytes: 10e6}
+
+	writer := kafka.NewWriter(configWrite)
+	reader := kafka.NewReader(configRead)
+
 	handlerKafka := H.KafkatHandler{ID_NODE: ID_NODE, Url: URLKAFKA}
 	handlerAPI := H.ApiHandler{Url: URLAPI}
 	handlerHeartBeat := H.HeartBeatHandler{ID_NODE: ID_NODE, Url: URLKAFKA}
-	handlerToken := H.TokenHandler{ID_NODE: ID_NODE, Url: URLKAFKA, TOKEN: TOKEN, TOKEN_TOPIC: TOKENCHECK_TOPIC}
+	handlerToken := H.TokenHandler{ID_NODE: ID_NODE, Url: URLKAFKA, ReaderTokenGenerator: reader, WriterTokenGenerator: writer}
 	handlerNode := H.NodeActiveHandler{ID_NODE: ID_NODE, Url: URLKAFKA, PRESENTATION_TOPIC: PRESENTATION_TOPIC, ALL_NODE: ALL_NODE}
 
 	handlerKafka.CreateNewTopicKafka()
@@ -60,14 +66,16 @@ func main() {
 
 	for i := 0; i < len(ALL_ARTICLE.Articles); {
 
-		if handlerToken.TOKEN == YES {
+		haveToken := handlerToken.RequestToken()
+		if haveToken {
 			sendMessage(ALL_ARTICLE.Articles[i])
 
 			if handlerNode.GetNumberNode() > 0 {
 				handlerToken.SendToken(handlerNode.GetNode())
-				handlerToken.TOKEN = NO
-				i++
 			}
+
+			handlerToken.TOKEN = false
+			i++
 		}
 
 		time.Sleep(4 * time.Second)
@@ -107,8 +115,6 @@ func startHeartBeatHandler(handler *H.HeartBeatHandler, handlerNode *H.NodeActiv
 
 		handler.SendHeart(writerHeart)
 		handler.Wait(readerBeat, handlerNode)
-
-		fmt.Println(handlerNode.ALL_NODE)
 		time.Sleep(5 * time.Second)
 
 	}
@@ -116,13 +122,14 @@ func startHeartBeatHandler(handler *H.HeartBeatHandler, handlerNode *H.NodeActiv
 }
 
 func listenToken(handlerToken *H.TokenHandler) {
-	channel := make(chan string)
+	channel := make(chan bool)
 	go handlerToken.ListenReceveToken(channel)
 
 	for {
 		token := <-channel
 		fmt.Println("token arrivato")
 		handlerToken.TOKEN = token
+		handlerToken.SendHackToken()
 	}
 
 }
