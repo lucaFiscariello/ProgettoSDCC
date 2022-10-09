@@ -1,38 +1,22 @@
-package main
+package handler
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"os"
 	"strconv"
 	"time"
 
 	"github.com/segmentio/kafka-go"
 )
 
-var TIMEOUT = os.Getenv("TIMEOUT")
-var ID_KAFKA = os.Getenv("ID_KAFKA")
-var TOKENREQUEST_TOPIC = os.Getenv("TOKENREQUEST_TOPIC")
-
-type Message struct {
-	TypeMessage  string `json:"TypeMessage"`
-	Id_node      string `json:"Id_node"`
-	Id_message   int    `json:"Id_message"`
-	ConcessToken bool   `json:"ConcessToken"`
+type TokenChecker struct {
+	Url       string
+	ID_NODE   string
+	WAIT_TIME string
 }
 
-const (
-	messageType  string = "messageType"
-	HeartBeat           = "HeartBeat"
-	Token               = "Token"
-	TokenRequest        = "TokenRequest"
-	TokenCheck          = "TokenCheck"
-)
-
-func main() {
-
-	waitStartNode()
+func (tc TokenChecker) Start() {
 
 	var messageReceved Message
 
@@ -41,8 +25,8 @@ func main() {
 	var concessToken = true
 
 	configReader := kafka.ReaderConfig{
-		Brokers:  []string{ID_KAFKA},
-		Topic:    TOKENREQUEST_TOPIC,
+		Brokers:  []string{tc.Url},
+		Topic:    tc.ID_NODE,
 		MaxBytes: 10e6}
 
 	reader := kafka.NewReader(configReader)
@@ -54,7 +38,7 @@ func main() {
 
 		if messageReceved.TypeMessage == TokenRequest {
 			configWrite := kafka.WriterConfig{
-				Brokers: []string{ID_KAFKA},
+				Brokers: []string{tc.Url},
 				Topic:   messageReceved.Id_node}
 
 			writer := kafka.NewWriter(configWrite)
@@ -70,26 +54,15 @@ func main() {
 
 			fmt.Println("Richiesta token da " + messageReceved.Id_node + ". Token concesso: " + strconv.FormatBool(concessToken))
 
-			message := Message{TypeMessage: TokenRequest, ConcessToken: concessToken, Id_message: messageReceved.Id_message}
+			message := Message{TypeMessage: TokenResponse, ConcessToken: concessToken, Id_message: messageReceved.Id_message}
 			messageByte, _ := json.Marshal(message)
 			err = writer.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
 			checkErr(err)
-		} else {
+		} else if messageReceved.TypeMessage == TokenCheck {
 			timeout = time.Now()
+			fmt.Println("check ricevuto da: " + messageReceved.Id_node)
 		}
 
 	}
 
-}
-
-func waitStartNode() {
-	timeout, err := strconv.Atoi(TIMEOUT)
-	checkErr(err)
-	time.Sleep(time.Duration(timeout) * time.Second)
-}
-
-func checkErr(err error) {
-	if err != nil {
-		fmt.Println(err)
-	}
 }

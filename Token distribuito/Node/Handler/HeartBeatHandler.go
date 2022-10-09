@@ -22,11 +22,12 @@ type Message struct {
 }
 
 const (
-	messageType  string = "messageType"
-	HeartBeat           = "HeartBeat"
-	Token               = "Token"
-	TokenRequest        = "TokenRequest"
-	TokenCheck          = "TokenCheck"
+	messageType   string = "messageType"
+	HeartBeat            = "HeartBeat"
+	Token                = "Token"
+	TokenRequest         = "TokenRequest"
+	TokenCheck           = "TokenCheck"
+	TokenResponse        = "TokenResponse"
 )
 
 type HandlerHB interface {

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"time"
 
 	"github.com/segmentio/kafka-go"
 )
@@ -17,13 +18,10 @@ const (
 )
 
 type TokenHandler struct {
-	Url                  string
-	ID_NODE              string
-	TOKEN_REQUEST_TOPIC  string
-	TOKEN_CHECK_TOPIC    string
-	TOKEN                bool
-	ReaderTokenGenerator *kafka.Reader
-	WriterTokenGenerator *kafka.Writer
+	Url               string
+	ID_NODE           string
+	TOKEN             bool
+	ReaderTokenLeader *kafka.Reader
 }
 
 type HandlerTK interface {
@@ -63,8 +61,7 @@ func (h TokenHandler) SendToken(is_active map[string]bool) {
 
 			message := Message{TypeMessage: Token, Id_node: h.ID_NODE}
 			messageByte, _ := json.Marshal(message)
-			err := writer.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
-			checkErr(err)
+			writer.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
 			return
 		}
 	}
@@ -81,9 +78,8 @@ func (h TokenHandler) ListenReceveToken(channel chan bool) {
 	for {
 		var messageReceved Message
 
-		messageKafka, err := reader.ReadMessage(context.Background())
-		err = json.Unmarshal(messageKafka.Value, &messageReceved)
-		checkErr(err)
+		messageKafka, _ := reader.ReadMessage(context.Background())
+		json.Unmarshal(messageKafka.Value, &messageReceved)
 
 		if messageReceved.TypeMessage == Token {
 			channel <- true
@@ -92,7 +88,13 @@ func (h TokenHandler) ListenReceveToken(channel chan bool) {
 
 }
 
-func (h TokenHandler) RequestToken() bool {
+func (h TokenHandler) RequestToken(leaderID string) bool {
+
+	configWrite := kafka.WriterConfig{
+		Brokers: []string{h.Url},
+		Topic:   leaderID}
+
+	writerLeader := kafka.NewWriter(configWrite)
 
 	if h.TOKEN {
 		return true
@@ -101,17 +103,25 @@ func (h TokenHandler) RequestToken() bool {
 	var messageReceved Message
 	Id_message = Id_message + 1
 
+	fmt.Println("invio richiesta token se leader crush")
 	message := Message{TypeMessage: TokenRequest, Id_node: h.ID_NODE, Id_message: Id_message}
 	messageByte, _ := json.Marshal(message)
-	err := h.WriterTokenGenerator.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
-	checkErr(err)
+	writerLeader.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
 
 	for {
-		messageKafka, err := h.ReaderTokenGenerator.ReadMessage(context.Background())
+		contextTimeout, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		messageKafka, err := h.ReaderTokenLeader.ReadMessage(contextTimeout)
 		err = json.Unmarshal(messageKafka.Value, &messageReceved)
-		checkErr(err)
 
-		if messageReceved.TypeMessage == TokenRequest && messageReceved.Id_message == Id_message {
+		defer cancel()
+
+		if err != nil {
+			fmt.Println("attesa risposta leader timeout")
+			return false
+		}
+
+		if messageReceved.TypeMessage == TokenResponse && messageReceved.Id_message == Id_message {
+			fmt.Println("leader risponde richiesta token: " + strconv.FormatBool(messageReceved.ConcessToken))
 			h.TOKEN = messageReceved.ConcessToken
 			return messageReceved.ConcessToken
 		}
@@ -119,11 +129,18 @@ func (h TokenHandler) RequestToken() bool {
 
 }
 
-func (h TokenHandler) SendHackToken() {
+func (h TokenHandler) SendHackToken(leaderID string) {
+
+	configWrite := kafka.WriterConfig{
+		Brokers: []string{h.Url},
+		Topic:   leaderID}
+
+	writerLeader := kafka.NewWriter(configWrite)
 
 	message := Message{TypeMessage: TokenCheck, Id_node: h.ID_NODE}
 	messageByte, _ := json.Marshal(message)
-	err := h.WriterTokenGenerator.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
-	checkErr(err)
+	writerLeader.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
+
+	fmt.Println("send ack to: " + leaderID)
 
 }
