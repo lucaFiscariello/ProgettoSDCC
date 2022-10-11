@@ -41,43 +41,26 @@ func main() {
 	// Attendo lo scadere di un timeout prima di avviare il nodo
 	waitStartNode()
 
-	configRead := kafka.ReaderConfig{
-		Brokers:  []string{URLKAFKA},
-		Topic:    ID_NODE,
-		MaxBytes: 10e6}
-
-	//Reader e writer configurati per interagire con il generatore del token
-	reader := kafka.NewReader(configRead)
-
 	//Handler per gestire la logica del nodo
 	handlerKafka := H.KafkatHandler{ID_NODE: ID_NODE, Url: URLKAFKA}
 	handlerAPI := H.ApiHandler{Url: URLAPI}
 	handlerHeartBeat := H.HeartBeatHandler{ID_NODE: ID_NODE, Url: URLKAFKA}
-	handlerToken := H.TokenHandler{ID_NODE: ID_NODE, Url: URLKAFKA, ReaderTokenLeader: reader}
+	handlerToken := H.TokenHandler{ID_NODE: ID_NODE, Url: URLKAFKA}
 	handlerNode := H.NodeActiveHandler{ID_NODE: ID_NODE, Url: URLKAFKA, PRESENTATION_TOPIC: PRESENTATION_TOPIC, ALL_NODE: ALL_NODE}
-
-	//Creazione canale di comunicazione "privato" del nodo in cui potrà ricevere token o messaggi di heart beat
-	handlerKafka.CreateNewTopicKafka()
-
-	/*
-	 *Pubblicazione del messaggio di presentazione del nodo.
-	 * Con questo messaggio il nodo si presenta agli altri nodi della rete.
-	 */
-	handlerKafka.CreatePresentation(PRESENTATION_TOPIC)
 
 	//Contatto l'API per scaricare tutti gli articoli di un determinato tema
 	ALL_ARTICLE = handlerAPI.RetriveArticle()
 
-	go handlerNode.ListenNewNode()                            // Creo un goroutine che si mette in ascolto di nuovi messaggi di presentazione
-	go startHeartBeatHandler(&handlerHeartBeat, &handlerNode) // Avvio il gestore dell'heart beat
-	go listenToken(&handlerToken)                             // Avvio il listner che si mette in ascolto per l'arrivo del token
+	handlerKafka.CreateNewTopicKafka()                  // creazione nuovo topic kafka
+	handlerKafka.CreatePresentation(PRESENTATION_TOPIC) // creazione presentazione del nodo
+
+	go handlerNode.ListenNewNode()                                           // Creo un goroutine che si mette in ascolto di nuovi messaggi di presentazione
+	go handlerHeartBeat.StartHeartBeatHandler(HEARTBEAT_TOPIC, &handlerNode) // Avvio il gestore dell'heart beat
+	go listenToken(&handlerToken)                                            // Avvio il listner che si mette in ascolto per l'arrivo del token
 
 	fmt.Println("Nodo avviato")
 
-	/*
-	 * Attendo venga aperta la connessione Web socket.
-	 * Questa connessione si concretizza quando viene aperta la pagina web tramite browser
-	 */
+	//Attendo apertura connessione pagina web
 	waitConnectionWS()
 
 	for i := 0; i < len(ALL_ARTICLE.Articles); {
@@ -95,15 +78,11 @@ func main() {
 		//Se il nodo possiede il token puo accedere alla sezione critica
 		haveToken := handlerToken.RequestToken(leaderID)
 		if haveToken {
+
 			fmt.Println("entro sezione critica")
 			sendMessage(ALL_ARTICLE.Articles[i])
 
 			if handlerNode.GetNumberNode() > 0 {
-
-				/*Questo metodo contiene un invocazione ad una rpc.
-				 *la procedura a chiamata remota invia l'articolo ad un nodo che lo pubblicherà sulla pagina web
-				 *tramite la connessione con Web Socket
-				 */
 				handlerToken.SendToken(handlerNode.GetNode())
 			}
 
@@ -120,46 +99,6 @@ func waitStartNode() {
 	timeout, err := strconv.Atoi(TIMEOUT)
 	checkErr(err)
 	time.Sleep(time.Duration(timeout) * time.Second)
-}
-
-func startHeartBeatHandler(handler *H.HeartBeatHandler, handlerNode *H.NodeActiveHandler) {
-
-	configReadNodeBeat := kafka.ReaderConfig{
-		Brokers:  []string{URLKAFKA},
-		Topic:    ID_NODE,
-		MaxBytes: 10e6}
-
-	configReadNodeHeart := kafka.ReaderConfig{
-		Brokers:  []string{URLKAFKA},
-		Topic:    HEARTBEAT_TOPIC,
-		MaxBytes: 10e6}
-
-	configWriteHeart := kafka.WriterConfig{
-		Brokers: []string{URLKAFKA},
-		Topic:   HEARTBEAT_TOPIC}
-
-	readerBeat := kafka.NewReader(configReadNodeBeat)   //Reader che legge messaggi di beat sul canale "privato" del nodo
-	readerHeart := kafka.NewReader(configReadNodeHeart) // Reader che legge messagi di heart sul canale condiviso tra tutti i nodi
-	writerHeart := kafka.NewWriter(configWriteHeart)    // Writer che pubblica messaggi di heart sul canale condiviso
-
-	/*
-	 * Avvio goroutine che si mette in ascolto dei messaggi di heart sul canale comune
-	 * e risponde al nodo che ha inviato la richiesta con un messaggio di beat
-	 */
-	go handler.SendBeat(readerHeart)
-
-	for {
-
-		/*
-		 *Periodicamente invio messaggi di heart e attendo che arrivino tutti i messaggi di beat.
-		 *Tutti i nodi che risultano essere attivi vengono memorizzatti in una mappa
-		 */
-		handler.SendHeart(writerHeart)
-		handler.Wait(readerBeat, handlerNode)
-		time.Sleep(5 * time.Second)
-
-	}
-
 }
 
 func listenToken(handlerToken *H.TokenHandler) {
@@ -180,10 +119,7 @@ func waitConnectionWS() {
 		Topic:    START,
 		MaxBytes: 10e6}
 
-	/*
-	 *Mi metto in ascolto su un topic in cui verrà pubblicato un messaggio di "start" nel momento in cui
-	 *verrà aperta la connesione Web Socket
-	 */
+	//Attendo messaggio di "start" quando l'utente apre la pagina web
 	reader := kafka.NewReader(configReadNode)
 	reader.ReadMessage(context.Background())
 }

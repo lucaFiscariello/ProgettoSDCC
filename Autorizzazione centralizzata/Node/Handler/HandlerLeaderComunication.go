@@ -17,6 +17,7 @@ type LeaderComunicationHandler struct {
 }
 
 var lastID = 0
+var reader *kafka.Reader = nil
 
 func (lh *LeaderComunicationHandler) CanExecute() bool {
 
@@ -80,5 +81,18 @@ func (lh *LeaderComunicationHandler) Release() {
 	checkErr(err)
 
 	fmt.Println("Autorizzazione rilasciata")
+
+}
+
+func (lh *LeaderComunicationHandler) singletonReader() {
+
+	if reader == nil {
+		configRead := kafka.ReaderConfig{
+			Brokers:  []string{lh.Url},
+			Topic:    lh.ID_NODE,
+			MaxBytes: 10e6}
+
+		reader = kafka.NewReader(configRead)
+	}
 
 }

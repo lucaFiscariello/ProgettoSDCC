@@ -1,0 +1,22 @@
+syntax = "proto3";
+//protoc --go_out=. --go-grpc_out=. stub.proto
+
+option go_package = "stub/server";
+package stub;
+
+
+service service {
+  rpc SendArticle(article) returns (response) {}
+}
+
+message article {
+  string       Title =1;
+	string Description =2;
+	string  UrlToImage =3;
+  string  UrlSite =4;
+}
+
+message response {
+}
+
+

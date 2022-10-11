@@ -15,7 +15,7 @@ type KafkatHandler struct {
 
 type HandlerKF interface {
 	CreateNewTopicKafka()
-	CreatePresentation(PRESENTATION_TOPIC string)
+	CreatePresentation()
 }
 
 func (kh KafkatHandler) CreateNewTopicKafka() {

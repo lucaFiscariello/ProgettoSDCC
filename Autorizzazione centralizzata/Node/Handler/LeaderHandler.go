@@ -17,15 +17,15 @@ type LeaderHandler struct {
 var queueMessage []Message
 var freeCriticSection bool
 
-func (lh LeaderHandler) Handle() {
+func (lh LeaderHandler) StartLeaderHandler() {
 
 	freeCriticSection = true
-	go lh.listnerRelease()
-	lh.listnerAutorization()
+	go lh.startListnerRelease()
+	lh.startListnerAutorization()
 
 }
 
-func (lh LeaderHandler) listnerAutorization() {
+func (lh LeaderHandler) startListnerAutorization() {
 	configRead := kafka.ReaderConfig{
 		Brokers:  []string{lh.Url},
 		Topic:    lh.ID_LEADER,
@@ -51,7 +51,7 @@ func (lh LeaderHandler) listnerAutorization() {
 	}
 }
 
-func (lh LeaderHandler) listnerRelease() {
+func (lh LeaderHandler) startListnerRelease() {
 	configRead := kafka.ReaderConfig{
 		Brokers:  []string{lh.Url},
 		Topic:    lh.ID_LEADER,

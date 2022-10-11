@@ -18,10 +18,9 @@ const (
 )
 
 type TokenHandler struct {
-	Url               string
-	ID_NODE           string
-	TOKEN             bool
-	ReaderTokenLeader *kafka.Reader
+	Url     string
+	ID_NODE string
+	TOKEN   bool
 }
 
 type HandlerTK interface {
@@ -30,6 +29,7 @@ type HandlerTK interface {
 }
 
 var Id_message = 0
+var reader *kafka.Reader = nil
 
 func (h TokenHandler) SendToken(is_active map[string]bool) {
 
@@ -108,9 +108,10 @@ func (h TokenHandler) RequestToken(leaderID string) bool {
 	messageByte, _ := json.Marshal(message)
 	writerLeader.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
 
+	h.singletonReader()
 	for {
 		contextTimeout, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		messageKafka, err := h.ReaderTokenLeader.ReadMessage(contextTimeout)
+		messageKafka, err := reader.ReadMessage(contextTimeout)
 		err = json.Unmarshal(messageKafka.Value, &messageReceved)
 
 		defer cancel()
@@ -142,5 +143,18 @@ func (h TokenHandler) SendHackToken(leaderID string) {
 	writerLeader.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
 
 	fmt.Println("send ack to: " + leaderID)
+
+}
+
+func (h TokenHandler) singletonReader() {
+
+	if reader == nil {
+		configRead := kafka.ReaderConfig{
+			Brokers:  []string{h.Url},
+			Topic:    h.ID_NODE,
+			MaxBytes: 10e6}
+
+		reader = kafka.NewReader(configRead)
+	}
 
 }

@@ -5,9 +5,7 @@ import (
 	H "fiscariello/luca/node/Handler"
 	pb "fiscariello/luca/node/stub"
 	"fmt"
-	"math"
 	"os"
-	"regexp"
 	"strconv"
 	"time"
 
@@ -23,7 +21,7 @@ var IP_KAFKA = os.Getenv("IP_KAFKA")
 var PORT_KAFKA = os.Getenv("PORT_KAFKA")
 var PRESENTATION_TOPIC = os.Getenv("PRESENTATION_TOPIC")
 var HEARTBEAT_TOPIC = os.Getenv("HEARTBEAT_TOPIC")
-var TOKEN_REQUEST_TOPIC = os.Getenv("TOKEN_REQUEST_TOPIC")
+var REQUEST_TOPIC = os.Getenv("REQUEST_TOPIC")
 var ID_NODE = os.Getenv("ID_NODE")
 var TOKEN = os.Getenv("HAVE_TOKEN")
 var TEMA = os.Getenv("TEMA")
@@ -44,47 +42,42 @@ func main() {
 	handlerAPI := H.ApiHandler{Url: URLAPI}
 	handlerHeartBeat := H.HeartBeatHandler{ID_NODE: ID_NODE, Url: URLKAFKA}
 	handlerNode := H.NodeActiveHandler{ID_NODE: ID_NODE, Url: URLKAFKA, PRESENTATION_TOPIC: PRESENTATION_TOPIC, ALL_NODE: ALL_NODE}
+	handlerRequestLamport := H.RequestHandler{Url: URLKAFKA, Topic_Request: REQUEST_TOPIC, ID_NODE: ID_NODE, HandlerNodes: &handlerNode}
 
 	//Contatto l'API per scaricare tutti gli articoli di un determinato tema
 	ALL_ARTICLE = handlerAPI.RetriveArticle()
 
-	handlerKafka.CreateNewTopicKafka()                  // creazione nuovo topic kafka
-	handlerKafka.CreatePresentation(PRESENTATION_TOPIC) // creazione presentazione del nodo
-
+	handlerKafka.CreateNewTopicKafka()                                       // creazione nuovo topic kafka
+	handlerKafka.CreatePresentation(PRESENTATION_TOPIC)                      // creazione presentazione del nodo
 	go handlerNode.ListenNewNode()                                           // Creo un goroutine che si mette in ascolto di nuovi messaggi di presentazione
 	go handlerHeartBeat.StartHeartBeatHandler(HEARTBEAT_TOPIC, &handlerNode) // Avvio il gestore dell'heart beat
+	go handlerRequestLamport.StartListnerRequest()                           // Avvio listener che si mette in ascolto di richieste di accesso alla CS
 
-	//Attendo venga aperta la connessione Web socket.
+	fmt.Println("Nodo avviato")
+
+	//Attendo apertura connessione pagina web
 	waitConnectionWS()
 
 	for i := 0; i < len(ALL_ARTICLE.Articles); {
 
-		isLeader, leaderID := serchLeader(handlerNode.GetNode())
+		handlerRequestLamport.SendRequest()
+		handlerRequestLamport.WaitAllAck()
 
-		if !isLeader {
+		canExecute := handlerRequestLamport.CanExecute()
+		if canExecute {
+			fmt.Println("Accesso CS")
 
-			handlerLeaderComunication := H.LeaderComunicationHandler{Url: URLKAFKA, ID_LEADER: leaderID, ID_NODE: ID_NODE}
-			canExecute := handlerLeaderComunication.CanExecute()
-			if canExecute {
+			//questa funzione contiene un rpc che pubblica articolo sulla pagina web
+			sendMessage(ALL_ARTICLE.Articles[i])
 
-				//questa funzione contiene un rpc che pubblica articolo sulla pagina web
-				sendMessage(ALL_ARTICLE.Articles[i])
-
-				if handlerNode.GetNumberNode() > 0 {
-					handlerLeaderComunication.Release()
-				}
-
-				i++
+			if handlerNode.GetNumberNode() > 0 {
+				handlerRequestLamport.Release()
 			}
 
-			time.Sleep(4 * time.Second)
-
-		} else {
-
-			fmt.Println("Eletto nuovo leader")
-			leader := H.LeaderHandler{Url: URLKAFKA, ID_LEADER: ID_NODE}
-			leader.StartLeaderHandler()
+			i++
 		}
+
+		time.Sleep(4 * time.Second)
 
 	}
 
@@ -105,38 +98,6 @@ func waitConnectionWS() {
 	//Attendo messaggio di "start" quando l'utente apre la pagina web
 	reader := kafka.NewReader(configReadNode)
 	reader.ReadMessage(context.Background())
-}
-
-func serchLeader(allNode map[string]bool) (bool, string) {
-
-	minID := math.MaxInt64
-	var minIDStr string
-	var isLeader = false
-
-	for nodeId, isActive := range allNode {
-
-		if isActive {
-			regexprNumber := regexp.MustCompile("[^0-9]+")
-			idNumberSTR := regexprNumber.ReplaceAllString(nodeId, "")
-
-			idNumber, err := strconv.Atoi(idNumberSTR)
-			checkErr(err)
-
-			if idNumber < minID {
-				minID = idNumber
-				minIDStr = nodeId
-			}
-
-		}
-
-	}
-
-	if ID_NODE < minIDStr {
-		minIDStr = ID_NODE
-		isLeader = true
-	}
-
-	return isLeader, minIDStr
 }
 
 func sendMessage(article H.Article) {

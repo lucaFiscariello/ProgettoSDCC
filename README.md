@@ -24,6 +24,15 @@ cd Autorizzazione centralizzata
 docker compose up --build
 ```
 
+## Lamport distribuito
+
+### Esecuzione
+
+```bash
+cd Lamport distribuito
+docker compose up --build
+```
+
 ## Risultati
 
 Una volta lanciato il comando è possibile visitare _http://localhost:8080/_ e osservare come dinamicamente il sito venga popolato da notizie e continuamente aggiornato.
