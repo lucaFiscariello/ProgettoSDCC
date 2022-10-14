@@ -1,3 +1,8 @@
+/*************************************************************************************
+*	Entità incaricata di scrivere articoli sulla pagina web tramite web socket
+* 	Il sender riceverà richieste di scrittura dai nodi della rete tramite grpc.
+**************************************************************************************/
+
 package impelementation
 
 import (

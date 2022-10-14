@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	Log "fiscariello/luca/node/Logger"
 	"fmt"
 	"time"
 
@@ -41,7 +42,7 @@ func (rh *RequestHandler) SendRequest() {
 
 	requestCriticSection = append(requestCriticSection, request)
 
-	fmt.Println("Richiesta accesso inviata")
+	Log.Println("Il nodo corrente richiede di accedere alla sezione critica.")
 
 }
 
@@ -66,7 +67,7 @@ func (rh *RequestHandler) WaitAllAck() {
 
 	}
 
-	fmt.Println("Ack arrivati da tutti i nodi")
+	Log.Println("Il nodo corrente ha ricevuto l'ack da tutti i nodi.")
 
 }
 
@@ -92,7 +93,7 @@ func (rh *RequestHandler) StartListnerRequest() {
 			requestCriticSection = append(requestCriticSection, messageReceved)
 			rh.SendAck(messageReceved.NodeID)
 
-			fmt.Println("Nuova richiesta: " + fmt.Sprint(requestCriticSection) + ". ack inviato")
+			Log.Println("Il nodo corrente riceve una nuova richiesta: " + fmt.Sprint(messageReceved) + ". Attuamente le richieste in corso  sono: " + fmt.Sprint(requestCriticSection) + ". Ack inviato")
 		}
 
 		if messageReceved.Type == ReleaseLamport {
@@ -109,7 +110,7 @@ func (rh *RequestHandler) StartListnerRequest() {
 
 			if found {
 				requestCriticSection = append(requestCriticSection[:positionRequest], requestCriticSection[positionRequest+1:]...)
-				fmt.Println("Accesso rilasciato per nodo: " + messageReceved.NodeID + ". Altre rihieste: " + fmt.Sprint(requestCriticSection))
+				Log.Println("Accesso alla sezione critica rilasciato dal nodo: " + messageReceved.NodeID + ". Altre rihieste ancora attive: " + fmt.Sprint(requestCriticSection))
 			}
 		}
 	}
@@ -160,7 +161,7 @@ func (rh *RequestHandler) Release() {
 
 	if found {
 		requestCriticSection = append(requestCriticSection[:positionRequest], requestCriticSection[positionRequest+1:]...)
-		fmt.Println("Accesso rilasciato nodo corrente")
+		Log.Println("Il nodo corrente rilascia l'accesso alla sezione critica.")
 	}
 
 }
@@ -173,11 +174,15 @@ func (rh *RequestHandler) CanExecute() bool {
 
 		for i := range requestCriticSection {
 			if requestCriticSection[i].LogicalClock < minClock {
+
 				minClock = requestCriticSection[i].LogicalClock
 				minIDnode = requestCriticSection[i].NodeID
+
 			} else if requestCriticSection[i].LogicalClock == minClock && minIDnode > requestCriticSection[i].NodeID {
+
 				minClock = requestCriticSection[i].LogicalClock
 				minIDnode = requestCriticSection[i].NodeID
+
 			}
 		}
 

@@ -1,9 +1,18 @@
+/*************************************************************************************
+*	Questo handler ha il compito di gestire l'heartbeat tra i vari nodi. L'idea di
+* 	base è che un nodo interessato a conoscere lo stato di attività degli altri nodi
+*	invia su un canale di comunicazione condiviso un messaggio di "heart". Rimane poi
+*	in ascolto dei messaggi di "beat" di tutti gli altri nodi attivi. Il nodo che
+*	invia il messagio di heart attende l'arrivo dei beat compresi in un certo arco
+*	temporale.
+**************************************************************************************/
+
 package handler
 
 import (
 	"context"
 	"encoding/json"
-	"fmt"
+	Log "fiscariello/luca/node/Logger"
 	"time"
 
 	"github.com/segmentio/kafka-go"
@@ -23,6 +32,47 @@ type HandlerHB interface {
 
 var last_id_message int = 0
 
+/*
+ * Questa funzione avvia l'handler l'handler vero e proprio che invierà messaggi di heart e si metterà
+ * in attesa di messaggi di beat.
+ */
+func (handler *HeartBeatHandler) StartHeartBeatHandler(HEARTBEAT_TOPIC string, handlerNode *NodeActiveHandler) {
+	configReadNodeBeat := kafka.ReaderConfig{
+		Brokers:  []string{handler.Url},
+		Topic:    handler.ID_NODE,
+		MaxBytes: 10e6}
+
+	configReadNodeHeart := kafka.ReaderConfig{
+		Brokers:  []string{handler.Url},
+		Topic:    HEARTBEAT_TOPIC,
+		MaxBytes: 10e6}
+
+	configWriteHeart := kafka.WriterConfig{
+		Brokers: []string{handler.Url},
+		Topic:   HEARTBEAT_TOPIC}
+
+	readerBeat := kafka.NewReader(configReadNodeBeat)   //Reader che legge messaggi di beat sul canale "privato" del nodo
+	readerHeart := kafka.NewReader(configReadNodeHeart) // Reader che legge messagi di heart sul canale condiviso tra tutti i nodi
+	writerHeart := kafka.NewWriter(configWriteHeart)    // Writer che pubblica messaggi di heart sul canale condiviso
+
+	//go routine che si mette in ascolto dei messaggi di heart e risponde con beat
+	go handler.SendBeat(readerHeart)
+
+	for {
+
+		//Periodicamente invio messaggi di heart e attendo che arrivino tutti i messaggi di beat.
+		handler.SendHeart(writerHeart)
+		handler.Wait(readerBeat, handlerNode)
+
+		time.Sleep(1 * time.Second)
+
+	}
+}
+
+/*
+ * Questa funzione viene invocata nel momento in cui il nodo corrente riceve un messaggio di heart da qualche
+ * altro nodo. Rispondendo con un beat comunica la sua attività.
+ */
 func (h HeartBeatHandler) SendBeat(reader *kafka.Reader) {
 
 	var message Message
@@ -53,6 +103,10 @@ func (h HeartBeatHandler) SendBeat(reader *kafka.Reader) {
 	}
 }
 
+/*
+ * Questa funzione viene invocata nel momento in cui il nodo corrente vuole verificare quanti altri
+ * nodi sono attivi nella rete.
+ */
 func (h HeartBeatHandler) SendHeart(writer *kafka.Writer) {
 	last_id_message = last_id_message + 1
 
@@ -63,6 +117,11 @@ func (h HeartBeatHandler) SendHeart(writer *kafka.Writer) {
 	checkErr(err)
 }
 
+/*
+ * Questa funzione viene invocata nel momento in cui il nodo corrente ha inviato un messaggio di beat
+ * e si mette in attesa che tutti gli altri nodi rispondano con un beat. Si attende fino allo scadere di un
+ * timeout
+ */
 func (h HeartBeatHandler) Wait(reader *kafka.Reader, handlerNode *NodeActiveHandler) {
 
 	var messageReceved Message
@@ -94,44 +153,10 @@ func (h HeartBeatHandler) Wait(reader *kafka.Reader, handlerNode *NodeActiveHand
 
 }
 
-func (handler *HeartBeatHandler) StartHeartBeatHandler(HEARTBEAT_TOPIC string, handlerNode *NodeActiveHandler) {
-	configReadNodeBeat := kafka.ReaderConfig{
-		Brokers:  []string{handler.Url},
-		Topic:    handler.ID_NODE,
-		MaxBytes: 10e6}
-
-	configReadNodeHeart := kafka.ReaderConfig{
-		Brokers:  []string{handler.Url},
-		Topic:    HEARTBEAT_TOPIC,
-		MaxBytes: 10e6}
-
-	configWriteHeart := kafka.WriterConfig{
-		Brokers: []string{handler.Url},
-		Topic:   HEARTBEAT_TOPIC}
-
-	readerBeat := kafka.NewReader(configReadNodeBeat)   //Reader che legge messaggi di beat sul canale "privato" del nodo
-	readerHeart := kafka.NewReader(configReadNodeHeart) // Reader che legge messagi di heart sul canale condiviso tra tutti i nodi
-	writerHeart := kafka.NewWriter(configWriteHeart)    // Writer che pubblica messaggi di heart sul canale condiviso
-
-	//go routine che si mette in ascolto dei messaggi di heart e risponde con beat
-	go handler.SendBeat(readerHeart)
-
-	for {
-
-		//Periodicamente invio messaggi di heart e attendo che arrivino tutti i messaggi di beat.
-		handler.SendHeart(writerHeart)
-		handler.Wait(readerBeat, handlerNode)
-
-		time.Sleep(5 * time.Second)
-
-	}
-}
-
 func checkErr(err error) {
 	if err != nil {
-		fmt.Println(err)
+		Log.Logger.Println(err)
 	}
-
 }
 
 func contains(allNode map[string]bool, id_search string) bool {

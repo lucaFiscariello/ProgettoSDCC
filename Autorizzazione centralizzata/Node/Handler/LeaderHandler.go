@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	Log "fiscariello/luca/node/Logger"
 	"fmt"
 	"time"
 
@@ -19,7 +20,6 @@ var freeCriticSection bool
 
 func (lh LeaderHandler) StartLeaderHandler() {
 
-	freeCriticSection = true
 	go lh.startListnerRelease()
 	lh.startListnerAutorization()
 
@@ -43,8 +43,10 @@ func (lh LeaderHandler) startListnerAutorization() {
 			checkErr(err)
 
 			if messageReceved.TypeMessage == RequestAutorization {
-				fmt.Println("leader riceve autorizzazione: " + messageReceved.Id_node)
 				queueMessage = append(queueMessage, messageReceved)
+				Log.Println("Il leader riceve richiesta autorizzazione da: " + messageReceved.Id_node + ". Richiesta: " + fmt.Sprint(messageReceved))
+				Log.Println("Attualmente la coda delle richieste contiene: " + fmt.Sprint(queueMessage))
+
 			}
 
 		}
@@ -63,7 +65,14 @@ func (lh LeaderHandler) startListnerRelease() {
 
 	for {
 
+		freeCriticSection = true
+
 		if messageReceved.TypeMessage == AutorizationRelease || freeCriticSection {
+
+			if !freeCriticSection {
+				Log.Println("E' stato rilasciato l'accesso alla sezione critica da parte di: " + messageReceved.Id_node)
+				Log.Println("Attualmente la coda delle richieste contiene: " + fmt.Sprint(queueMessage))
+			}
 
 			for freeCriticSection && len(queueMessage) > 0 {
 				oldMessage := queueMessage[0]
@@ -74,6 +83,7 @@ func (lh LeaderHandler) startListnerRelease() {
 
 				lh.sendAutorization(lastIdSend, lastNumberMessage)
 				ack := lh.waitAck(lastIdSend, lastNumberMessage)
+
 				freeCriticSection = !ack
 			}
 		}
@@ -97,8 +107,7 @@ func (lh LeaderHandler) sendAutorization(lastIdSend string, lastNumberMessage in
 	messageByte, _ := json.Marshal(message)
 	err := writer.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
 
-	fmt.Println("leader autorizza: " + lastIdSend)
-
+	Log.Println("Il leader autorizza il nodo " + lastIdSend + " ad accedere alla sezione critica")
 	checkErr(err)
 }
 
@@ -121,11 +130,13 @@ func (lh LeaderHandler) waitAck(lastIdSend string, lastNumberMessage int) bool {
 		messageKafka, _ := reader.ReadMessage(contextTimeout)
 		json.Unmarshal(messageKafka.Value, &messageReceved)
 
-		if messageReceved.TypeMessage == AutorizationACK && messageReceved.Id_message == lastNumberMessage && messageReceved.Id_message == lastID {
+		if messageReceved.TypeMessage == AutorizationACK && messageReceved.Id_message == lastNumberMessage && messageReceved.Id_node == lastIdSend {
+			Log.Println("Il leader riceve l'ack dal nodo: " + lastIdSend)
 			return true
 		}
 
 	}
 
+	Log.Println("Il leader NON riceve l'ack dal nodo: " + lastIdSend)
 	return false
 }

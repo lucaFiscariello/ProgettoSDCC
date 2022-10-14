@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	H "fiscariello/luca/node/Handler"
+	Log "fiscariello/luca/node/Logger"
 	pb "fiscariello/luca/node/stub"
+
 	"fmt"
 	"math"
 	"os"
@@ -36,6 +38,9 @@ var URLAPI = fmt.Sprintf(URLTEMPLATE, TEMA, APIKEY)
 
 func main() {
 
+	//inizializzo logger
+	Log.Inizialize()
+
 	// Attendo lo scadere di un timeout prima di avviare il nodo
 	waitStartNode()
 
@@ -54,18 +59,25 @@ func main() {
 	go handlerNode.ListenNewNode()                                           // Creo un goroutine che si mette in ascolto di nuovi messaggi di presentazione
 	go handlerHeartBeat.StartHeartBeatHandler(HEARTBEAT_TOPIC, &handlerNode) // Avvio il gestore dell'heart beat
 
+	Log.Println("Nodo avviato correttamente")
+
 	//Attendo venga aperta la connessione Web socket.
 	waitConnectionWS()
+
+	Log.Println("Apertura connessione web socket.")
 
 	for i := 0; i < len(ALL_ARTICLE.Articles); {
 
 		isLeader, leaderID := serchLeader(handlerNode.GetNode())
+		Log.Println("Il leader corrente è: " + leaderID)
 
 		if !isLeader {
 
 			handlerLeaderComunication := H.LeaderComunicationHandler{Url: URLKAFKA, ID_LEADER: leaderID, ID_NODE: ID_NODE}
 			canExecute := handlerLeaderComunication.CanExecute()
 			if canExecute {
+
+				Log.Println("Il nodo corrente accede alla sezione critica")
 
 				//questa funzione contiene un rpc che pubblica articolo sulla pagina web
 				sendMessage(ALL_ARTICLE.Articles[i])
@@ -78,10 +90,11 @@ func main() {
 			}
 
 			time.Sleep(4 * time.Second)
+			Log.Println("Nodi attualmente attivi: " + fmt.Sprint(handlerNode.GetNode()))
 
 		} else {
 
-			fmt.Println("Eletto nuovo leader")
+			Log.Println("Il nodo corrente è eletto leader")
 			leader := H.LeaderHandler{Url: URLKAFKA, ID_LEADER: ID_NODE}
 			leader.StartLeaderHandler()
 		}
@@ -158,7 +171,7 @@ func sendMessage(article H.Article) {
 
 func checkErr(err error) {
 	if err != nil {
-		fmt.Println(err)
+		Log.Println(fmt.Sprint(err))
 	}
 }
 

@@ -102,6 +102,28 @@ services:
       depends_on:
         - broker
         - webserver
+
+
+  node3:
+      hostname: node3
+      container_name: node3
+      build: ./Node
+      environment:
+          TIMEOUT : 20
+          TEMA : bitcoin
+          ID_NODE : node3
+          APIKEY : 621d12b7ec5940a380a2b9b249329ff9
+          URLTEMPLATE : http://newsapi.org/v2/everything?q=%s&apiKey=%s&language=it 
+          PORT_KAFKA : ":29092"
+          IP_KAFKA : "broker"
+          PRESENTATION_TOPIC : "presentation"
+          HEARTBEAT_TOPIC : "heartbeat"
+          REQUEST_TOPIC : "Request"
+          START_TOPIC : "start"
+          ID_WS : "webServer:50051"
+      depends_on:
+        - broker
+        - webserver
   
   
 

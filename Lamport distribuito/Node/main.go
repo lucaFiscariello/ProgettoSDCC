@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	H "fiscariello/luca/node/Handler"
+	Log "fiscariello/luca/node/Logger"
 	pb "fiscariello/luca/node/stub"
 	"fmt"
 	"os"
@@ -34,6 +35,9 @@ var URLAPI = fmt.Sprintf(URLTEMPLATE, TEMA, APIKEY)
 
 func main() {
 
+	//inizializzo logger
+	Log.Inizialize()
+
 	// Attendo lo scadere di un timeout prima di avviare il nodo
 	waitStartNode()
 
@@ -53,7 +57,7 @@ func main() {
 	go handlerHeartBeat.StartHeartBeatHandler(HEARTBEAT_TOPIC, &handlerNode) // Avvio il gestore dell'heart beat
 	go handlerRequestLamport.StartListnerRequest()                           // Avvio listener che si mette in ascolto di richieste di accesso alla CS
 
-	fmt.Println("Nodo avviato")
+	Log.Println("Nodo avviato correttamente")
 
 	//Attendo apertura connessione pagina web
 	waitConnectionWS()
@@ -65,7 +69,7 @@ func main() {
 
 		canExecute := handlerRequestLamport.CanExecute()
 		if canExecute {
-			fmt.Println("Accesso CS")
+			Log.Println("Il nodo corrente accede alla sezione critica.")
 
 			//questa funzione contiene un rpc che pubblica articolo sulla pagina web
 			sendMessage(ALL_ARTICLE.Articles[i])
@@ -78,6 +82,7 @@ func main() {
 		}
 
 		time.Sleep(4 * time.Second)
+		Log.Println("Nodi attualmente attivi: " + fmt.Sprint(handlerNode.GetNode()))
 
 	}
 
@@ -98,6 +103,9 @@ func waitConnectionWS() {
 	//Attendo messaggio di "start" quando l'utente apre la pagina web
 	reader := kafka.NewReader(configReadNode)
 	reader.ReadMessage(context.Background())
+
+	Log.Println("Apertura connessione web socket.")
+
 }
 
 func sendMessage(article H.Article) {

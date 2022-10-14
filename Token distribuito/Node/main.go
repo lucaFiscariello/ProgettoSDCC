@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	H "fiscariello/luca/node/Handler"
+	Log "fiscariello/luca/node/Logger"
 	pb "fiscariello/luca/node/stub"
 	"fmt"
 	"math"
@@ -38,6 +39,9 @@ var URLAPI = fmt.Sprintf(URLTEMPLATE, TEMA, APIKEY)
 
 func main() {
 
+	//inizializzo logger
+	Log.Inizialize()
+
 	// Attendo lo scadere di un timeout prima di avviare il nodo
 	waitStartNode()
 
@@ -54,11 +58,11 @@ func main() {
 	handlerKafka.CreateNewTopicKafka()                  // creazione nuovo topic kafka
 	handlerKafka.CreatePresentation(PRESENTATION_TOPIC) // creazione presentazione del nodo
 
-	go handlerNode.ListenNewNode()                                           // Creo un goroutine che si mette in ascolto di nuovi messaggi di presentazione
+	go handlerNode.StartListnerNewNode()                                     // Creo un goroutine che si mette in ascolto di nuovi messaggi di presentazione
 	go handlerHeartBeat.StartHeartBeatHandler(HEARTBEAT_TOPIC, &handlerNode) // Avvio il gestore dell'heart beat
 	go listenToken(&handlerToken)                                            // Avvio il listner che si mette in ascolto per l'arrivo del token
 
-	fmt.Println("Nodo avviato")
+	Log.Println("Nodo avviato correttamente")
 
 	//Attendo apertura connessione pagina web
 	waitConnectionWS()
@@ -69,7 +73,7 @@ func main() {
 		isLeader, leaderID = serchLeader(handlerNode.GetNode())
 
 		if isLeader && !checkerActive {
-			fmt.Println("eletto nuovo leader")
+			Log.Println("Il nodo corrente è stato eletto leader")
 			checkerToken := H.TokenChecker{Url: URLKAFKA, ID_NODE: leaderID, WAIT_TIME: TIMEOUT}
 			checkerActive = true
 			go checkerToken.Start()
@@ -79,7 +83,7 @@ func main() {
 		haveToken := handlerToken.RequestToken(leaderID)
 		if haveToken {
 
-			fmt.Println("entro sezione critica")
+			Log.Println("Il nodo corrente entra in sezione critica")
 			sendMessage(ALL_ARTICLE.Articles[i])
 
 			if handlerNode.GetNumberNode() > 0 {
@@ -107,7 +111,6 @@ func listenToken(handlerToken *H.TokenHandler) {
 
 	for {
 		token := <-channel
-		fmt.Println("token arrivato")
 		handlerToken.TOKEN = token
 		handlerToken.SendHackToken(leaderID)
 	}
@@ -122,6 +125,9 @@ func waitConnectionWS() {
 	//Attendo messaggio di "start" quando l'utente apre la pagina web
 	reader := kafka.NewReader(configReadNode)
 	reader.ReadMessage(context.Background())
+
+	Log.Println("Apertura connessione browser")
+
 }
 
 func sendMessage(article H.Article) {
@@ -138,7 +144,11 @@ func sendMessage(article H.Article) {
 	//Sfrutto una rpc per contattare il nodo incaricato di scrivere l'articolo sul sito tramite web socket
 	r, err := server.SendArticle(ctx, &pb.Article{Title: article.Title, Description: article.Description, UrlToImage: article.UrlToImage, UrlSite: article.Url})
 	checkErr(err)
-	fmt.Print(r)
+
+	if r != nil {
+		Log.Println("Scrittura avvenuta correttamente sulla web page")
+	}
+
 }
 
 func serchLeader(allNode map[string]bool) (bool, string) {
@@ -175,7 +185,7 @@ func serchLeader(allNode map[string]bool) (bool, string) {
 
 func checkErr(err error) {
 	if err != nil {
-		fmt.Println(err)
+		Log.Println(fmt.Sprint(err))
 	}
 }
 

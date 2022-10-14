@@ -3,23 +3,25 @@ package handler
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"time"
+
+	Log "fiscariello/luca/node/Logger"
 
 	"github.com/segmentio/kafka-go"
 )
 
 type LeaderComunicationHandler struct {
-	Url          string
-	ID_LEADER    string
-	ID_NODE      string
-	ReaderLeader *kafka.Reader
+	Url       string
+	ID_LEADER string
+	ID_NODE   string
 }
 
 var lastID = 0
 var reader *kafka.Reader = nil
 
 func (lh *LeaderComunicationHandler) CanExecute() bool {
+
+	lh.singletonReader()
 
 	config := kafka.WriterConfig{
 		Brokers: []string{lh.Url},
@@ -34,7 +36,7 @@ func (lh *LeaderComunicationHandler) CanExecute() bool {
 	err := writer.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
 	checkErr(err)
 
-	fmt.Println("Richiesta autorizzazione inviata")
+	Log.Println("Il node corrente richiede di entrare in sezione critica.")
 
 	contextTimeout, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -42,16 +44,18 @@ func (lh *LeaderComunicationHandler) CanExecute() bool {
 	for {
 		var messageReceved Message
 
-		messageKafka, err := lh.ReaderLeader.ReadMessage(contextTimeout)
+		messageKafka, err := reader.ReadMessage(contextTimeout)
 		err = json.Unmarshal(messageKafka.Value, &messageReceved)
 
 		if err != nil {
+			Log.Println("Il leader non è contattabile.")
 			return false
 		}
 
 		if messageReceved.TypeMessage == AutorizationOK && messageReceved.Id_message == lastID {
 			lh.SendAck(writer)
-			fmt.Println("Autorizzazione ottenuta")
+
+			Log.Println("Il nodo corrente ottiene autorizzazione dal leader.")
 			return true
 		}
 
@@ -63,6 +67,9 @@ func (lh *LeaderComunicationHandler) SendAck(writer *kafka.Writer) {
 	messageByte, _ := json.Marshal(message)
 	err := writer.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
 	checkErr(err)
+
+	Log.Println("Il nodo corrente invia un ack al leader.")
+
 }
 
 func (lh *LeaderComunicationHandler) Release() {
@@ -80,7 +87,7 @@ func (lh *LeaderComunicationHandler) Release() {
 	err := writer.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
 	checkErr(err)
 
-	fmt.Println("Autorizzazione rilasciata")
+	Log.Println("Il nodo corrente rilascia l'autorizzazione")
 
 }
 
