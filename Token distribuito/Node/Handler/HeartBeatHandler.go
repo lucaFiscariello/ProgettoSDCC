@@ -1,11 +1,11 @@
-/*************************************************************************************
-*	Questo handler ha il compito di gestire l'heartbeat tra i vari nodi. L'idea di
-* 	base è che un nodo interessato a conoscere lo stato di attività degli altri nodi
-*	invia su un canale di comunicazione condiviso un messaggio di "heart". Rimane poi
-*	in ascolto dei messaggi di "beat" di tutti gli altri nodi attivi. Il nodo che
-*	invia il messagio di heart attende l'arrivo dei beat compresi in un certo arco
-*	temporale.
-**************************************************************************************/
+/****************************************************************************************
+* Questo handler ha il compito di gestire l'heartbeat tra i vari nodi. L'idea di		*
+* base è che un nodo interessato a conoscere lo stato di attività degli altri nodi		*
+* invia su un canale di comunicazione condiviso un messaggio di "heart". Rimane poi		*
+* in ascolto dei messaggi di "beat" di tutti gli altri nodi attivi. Il nodo che			*
+* invia il messagio di heart attende l'arrivo dei beat compresi in un certo arco		*
+* temporale.																			*
+*****************************************************************************************/
 
 package handler
 

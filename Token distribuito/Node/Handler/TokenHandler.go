@@ -1,8 +1,8 @@
-/*************************************************************************************
-*	Questo handler ha il compito di gestire la ricezione di l'invio del token dal nodo
-*	corrente a un nuovo nodo. Oltre che a richiedere la generazione di un nuovo token
-* 	quando necessario.
-**************************************************************************************/
+/****************************************************************************************
+* Questo handler ha il compito di gestire la ricezione di l'invio del token dal nodo	*
+* corrente a un nuovo nodo. Oltre che a richiedere la generazione di un nuovo token		*
+* quando necessario.																	*
+*****************************************************************************************/
 
 package handler
 

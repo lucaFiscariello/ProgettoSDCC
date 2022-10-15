@@ -1,9 +1,9 @@
-/*************************************************************************************
-*	Questo handler ha il compito di memorizzare quali sono i nodi della rete attualmente
-* 	attivi. Queste informazioni sono memorizzate in una mappa.
-*	Questo handler verrà sfruttato prevalentemente dall'handler dell'heartbeat
-* 	il quale dopo aver completato un ciclo di heart-beat aggiornerà i dati nella mappa.
-**************************************************************************************/
+/****************************************************************************************
+* Questo handler ha il compito di memorizzare quali sono i nodi della rete attualmente	*
+* attivi. Queste informazioni sono memorizzate in una mappa.							*
+* Questo handler verrà sfruttato prevalentemente dall'handler dell'heartbeat			*
+* il quale dopo aver completato un ciclo di heart-beat aggiornerà i dati nella mappa.	*
+*****************************************************************************************/
 
 package handler
 

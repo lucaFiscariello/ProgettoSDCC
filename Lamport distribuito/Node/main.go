@@ -1,3 +1,16 @@
+/**************************************************************************************************
+* Main che contiene la logica principale del nodo. In questo programma il nodo:					  *
+* 	- Creerà i vari handler utili a gestire tutta la logica del nodo;							  *
+*	- Scaricherà tutti gli articoli relativi ad un determinato tema;							  *
+*	- Creerà un canale di comunicazione "privato" su kafka in cui riceverà messaggi di heartbeat  *
+*	  e messaggi di richiesta di accesso alla sezione critica;											  *
+*	- Avvierà listner che si metterà in ascolto dei messaggi di presentazione dei nuovi nodi che  *
+*	  si aggiungono alla rete;																	  *
+*	- Avvierà l'handler dell'heartbeat;															  *
+*	- Avvierà la comunicazione con gli altri nodi per coordinarsi e capire chi può accedere alla  *
+*	  sezione critica;																			  *
+**************************************************************************************************/
+
 package main
 
 import (

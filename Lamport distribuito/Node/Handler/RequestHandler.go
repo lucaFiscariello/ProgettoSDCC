@@ -1,3 +1,13 @@
+/************************************************************************************
+* Questo handler ha il compito di gestire le richieste di accesso alla sezione		*
+* critica in accordo con l'algoritmo di lamport distribuito. In particolare viene	*
+* implementato il clock logico e vengono previste funzionalità per:					*
+*	- Invio richiesta accesso alla sezione critica;									*
+*	- Invio ack in seguito alla ricezione di una richiesta;							*
+*	- Attesa di tutti gli ack degli altri nodi;										*
+*	- Rilascio. Invocata quando il nodo intende uscire dalla sezione critica.		*
+*************************************************************************************/
+
 package handler
 
 import (
@@ -27,6 +37,10 @@ var logicalClock = 0
 var requestCriticSection []MessageLamport
 var reader *kafka.Reader = nil
 
+/*
+ * Funzione usata per inviare una richiesta di accesso alla sezione critica. La richiesta è inviata su un canale di comunicazione
+ * condiviso a tutti i nodi.
+ */
 func (rh *RequestHandler) SendRequest() {
 
 	config := kafka.WriterConfig{
@@ -46,6 +60,30 @@ func (rh *RequestHandler) SendRequest() {
 
 }
 
+/*
+ * Funzione usata per inviare messaggi di ack dopo aver ricevuto una richiesta di accesso alla sezione critica.
+ * Il messaggio di ack verrà inviato esclusivamente sul canale privato del nodo richiedente.
+ */
+func (rh *RequestHandler) SendAck(nodeID string) {
+
+	logicalClock = logicalClock + 1
+
+	config := kafka.WriterConfig{
+		Brokers: []string{rh.Url},
+		Topic:   nodeID}
+
+	writer := kafka.NewWriter(config)
+
+	request := MessageLamport{Type: ACKLamport, NodeID: rh.ID_NODE, LogicalClock: logicalClock}
+	messageByte, _ := json.Marshal(request)
+	writer.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
+
+}
+
+/*
+ * Funzione usata per attendere tutti i messaggi di ack proveniente dagli altri nodi dopo aver inviato una richiesta di accesso.
+ * Il metodo non implementa meccanismi particolari , se un nodo della rete non risponde il programma va in deadlock.
+ */
 func (rh *RequestHandler) WaitAllAck() {
 
 	rh.singletonReader()
@@ -71,6 +109,12 @@ func (rh *RequestHandler) WaitAllAck() {
 
 }
 
+/*
+ * Funzione usata per avviare il listner che si mette in ascolto di nuove richieste provenienti da altri nodi
+ * ma ascolta anche messaggi di release della sezione critica.
+ * All'arrivo di una richiesta è inviato un messaggio di ack e la richiesta è inserita in una coda.
+ * All'arrivo di un messaggio di rilascio la richiesta corrispondete è eliminata dalla coda.
+ */
 func (rh *RequestHandler) StartListnerRequest() {
 	var messageReceved MessageLamport
 
@@ -81,10 +125,12 @@ func (rh *RequestHandler) StartListnerRequest() {
 
 	reader := kafka.NewReader(configRead)
 
+	// leggo messaggi in arrivo sul canale privato del nodo corrente.
 	for {
 		messageKafka, _ := reader.ReadMessage(context.Background())
 		json.Unmarshal(messageKafka.Value, &messageReceved)
 
+		//Potrebbero arrivare messaggi di richiesta di accesso alla sezione critica
 		if messageReceved.Type == RequestLamport && messageReceved.NodeID != rh.ID_NODE {
 			if messageReceved.LogicalClock > logicalClock {
 				logicalClock = messageReceved.LogicalClock
@@ -96,6 +142,7 @@ func (rh *RequestHandler) StartListnerRequest() {
 			Log.Println("Il nodo corrente riceve una nuova richiesta: " + fmt.Sprint(messageReceved) + ". Attuamente le richieste in corso  sono: " + fmt.Sprint(requestCriticSection) + ". Ack inviato")
 		}
 
+		//Potrebbero arrivare messaggi di rilascio della sezione critica
 		if messageReceved.Type == ReleaseLamport {
 
 			positionRequest := -1
@@ -108,6 +155,7 @@ func (rh *RequestHandler) StartListnerRequest() {
 				}
 			}
 
+			//Elimino la richiesta di accesso appena soddisfatta dalla coda
 			if found {
 				requestCriticSection = append(requestCriticSection[:positionRequest], requestCriticSection[positionRequest+1:]...)
 				Log.Println("Accesso alla sezione critica rilasciato dal nodo: " + messageReceved.NodeID + ". Altre rihieste ancora attive: " + fmt.Sprint(requestCriticSection))
@@ -117,22 +165,9 @@ func (rh *RequestHandler) StartListnerRequest() {
 
 }
 
-func (rh *RequestHandler) SendAck(nodeID string) {
-
-	logicalClock = logicalClock + 1
-
-	config := kafka.WriterConfig{
-		Brokers: []string{rh.Url},
-		Topic:   nodeID}
-
-	writer := kafka.NewWriter(config)
-
-	request := MessageLamport{Type: ACKLamport, NodeID: rh.ID_NODE, LogicalClock: logicalClock}
-	messageByte, _ := json.Marshal(request)
-	writer.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
-
-}
-
+/*
+ * Funzione usata per avvisare gli altri nodi della rete che il nodo corrente ha intenzione di uscire dalla sezione critica.
+ */
 func (rh *RequestHandler) Release() {
 
 	logicalClock = logicalClock + 1
@@ -166,6 +201,9 @@ func (rh *RequestHandler) Release() {
 
 }
 
+/*
+ * Funzione usata per verificare se il nodo corrente rispetta le condizioni per poter accedere alla sezione critica.
+ */
 func (rh *RequestHandler) CanExecute() bool {
 
 	for {
@@ -173,13 +211,16 @@ func (rh *RequestHandler) CanExecute() bool {
 		minIDnode := requestCriticSection[0].NodeID
 
 		for i := range requestCriticSection {
+
 			if requestCriticSection[i].LogicalClock < minClock {
 
+				//Per accedere alla sezione critica il clock logico della richiesta del nodo corrente deve essere il minimo.
 				minClock = requestCriticSection[i].LogicalClock
 				minIDnode = requestCriticSection[i].NodeID
 
 			} else if requestCriticSection[i].LogicalClock == minClock && minIDnode > requestCriticSection[i].NodeID {
 
+				//Se ci sono più nodi con lo stesso clock logico ha la precedenza quello con id minore
 				minClock = requestCriticSection[i].LogicalClock
 				minIDnode = requestCriticSection[i].NodeID
 

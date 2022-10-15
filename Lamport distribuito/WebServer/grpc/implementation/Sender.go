@@ -1,3 +1,8 @@
+/********************************************************************************
+* Entità incaricata di scrivere articoli sulla pagina web tramite web socket.	*
+* Il sender riceverà richieste di scrittura dai nodi della rete tramite grpc.	*
+*********************************************************************************/
+
 package impelementation
 
 import (
@@ -34,10 +39,14 @@ func (sender *Sender) RegisterServiceServer(PORT string, connection *websocket.C
 
 }
 
+/*
+ * Questo metodo deve essere invocato in maniera mutuamente esclisiva
+ */
 func (sender *Sender) SendArticle(ctx context.Context, article *pb.Article) (*pb.Response, error) {
 
 	fmt.Println("server invia " + article.Title)
 
+	//Scrittura dell'articolo tramite web socket
 	byteMessage, err := json.Marshal(article)
 	err = sender.connectionWS.WriteMessage(1, byteMessage)
 	checkErr(err)

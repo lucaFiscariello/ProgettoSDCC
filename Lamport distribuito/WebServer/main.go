@@ -1,3 +1,9 @@
+/************************************************************************************
+* Web server che ospita la pagina web su cui pubblicare le notizie. La scrittura	*
+* delle notizie è affidata a un Sender il quale riceverà richieste di scrittura		*
+* dai nodi della rete tramite grpc.													*
+*************************************************************************************/
+
 package main
 
 import (
@@ -23,12 +29,15 @@ var sender S.Sender
 
 func main() {
 
+	//Entità incaricata di scrivere sulla pagina web tramite web socket.
 	sender = S.Sender{NewConnection: true}
 
+	//Endpoint per esporre la pagina web
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./webSite/index.html")
 	})
 
+	//Endpoint per aprire connessione web socket
 	http.HandleFunc("/Connection/WebSocket", func(w http.ResponseWriter, r *http.Request) {
 
 		upgrader.CheckOrigin = func(r *http.Request) bool { return true }
@@ -51,6 +60,10 @@ func main() {
 
 }
 
+/*
+ * Questa funzione notifica a tutti i nodi della rete che la connessione web socket è stata stabilita.
+ * Dopo questo messaggio i nodi possono iniziare a coordinarsi per pubblicare i propri articoli.
+ */
 func notifyNode() {
 
 	url := IP_KAFKA + PORT_KAFKA

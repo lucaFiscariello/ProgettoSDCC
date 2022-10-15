@@ -1,9 +1,9 @@
-/*************************************************************************************
-*	Questo handler ha il compito di supervisionare la comunicazione e assicurarsi che
-* 	i nodi continuino a comunicare senza entrare in deadlock. Il suo compito è quello di
-*	verificare che un token sia in circolo nella rete. Se il token è perso ne genera
-*	uno nuovo.
-**************************************************************************************/
+/********************************************************************************************
+*	Questo handler ha il compito di supervisionare la comunicazione e assicurarsi che		*
+* 	i nodi continuino a comunicare senza entrare in deadlock. Il suo compito è quello di	*
+*	verificare che un token sia in circolo nella rete. Se il token è perso ne genera		*
+*	uno nuovo.																				*
+*********************************************************************************************/
 
 package handler
 

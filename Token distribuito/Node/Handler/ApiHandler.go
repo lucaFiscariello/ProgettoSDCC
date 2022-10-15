@@ -1,9 +1,9 @@
-/*************************************************************************************
-*	Questo handler ha l'obiettivo di scaricare gli articoli di un determinato tema
-*	tramite un API. Questi articoli verranno poi inviate dal programma principale
-*	(main.go) al Sender, incaricato di pubblicare l'articolo sulla pagina web tramite
-* 	web socket.
-**************************************************************************************/
+/***************************************************************************************
+* Questo handler ha l'obiettivo di scaricare gli articoli di un determinato tema	   *
+* tramite un API. Questi articoli verranno poi inviate dal programma principale        *
+* (main.go) al Sender, incaricato di pubblicare l'articolo sulla pagina web tramite    *
+* web socket.																		   *
+****************************************************************************************/
 
 package handler
 

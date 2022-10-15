@@ -1,3 +1,10 @@
+/****************************************************************************************
+* Questo handler ha il compito di memorizzare quali sono i nodi della rete attualmente	*
+* attivi. Queste informazioni sono memorizzate in una mappa.							*
+* Questo handler verrà sfruttato prevalentemente dall'handler dell'heartbeat			*
+* il quale dopo aver completato un ciclo di heart-beat aggiornerà i dati nella mappa.	*
+*****************************************************************************************/
+
 package handler
 
 import (
@@ -13,6 +20,11 @@ type NodeActiveHandler struct {
 	ALL_NODE           map[string]bool
 }
 
+/*
+ * Questa funzione attiva un listner che si mette in ascolto di messaggi di presentazione di altri nodi.
+ * Infatti ogni qual volta un nuovo nodo accede alla rete, pubblica un nuovo messaggio su un topic comune specificando il
+ * proprio id.
+ */
 func (nh NodeActiveHandler) ListenNewNode() {
 	config := kafka.ReaderConfig{
 		Brokers:  []string{nh.Url},
@@ -33,12 +45,26 @@ func (nh NodeActiveHandler) ListenNewNode() {
 	}
 }
 
+/*
+ * Questa funzione restituisce una copia della mappa dei nodi attivi
+ */
 func (nh NodeActiveHandler) GetNode() map[string]bool {
 	var copyAllNode map[string]bool = make(map[string]bool)
 	for key, value := range nh.ALL_NODE {
 		copyAllNode[key] = value
 	}
 	return copyAllNode
+}
+
+/*
+ * Questa funzione restituisce una copia della mappa dei nodi inizializzati tutti come non attivi
+ */
+func (nh NodeActiveHandler) GetAllNode() map[string]bool {
+	allNodeNoTActive := make(map[string]bool)
+	for key := range nh.ALL_NODE {
+		allNodeNoTActive[key] = false
+	}
+	return allNodeNoTActive
 }
 
 func (nh NodeActiveHandler) GetNumberNode() int {
@@ -55,14 +81,6 @@ func (nh NodeActiveHandler) GetNumberActiveNode() int {
 		}
 	}
 	return nodeActive
-}
-
-func (nh NodeActiveHandler) GetAllNode() map[string]bool {
-	allNodeNoTActive := make(map[string]bool)
-	for key := range nh.ALL_NODE {
-		allNodeNoTActive[key] = false
-	}
-	return allNodeNoTActive
 }
 
 func (nh NodeActiveHandler) SetNode(nodes map[string]bool) {

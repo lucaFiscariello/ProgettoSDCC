@@ -1,3 +1,10 @@
+/****************************************************************************************************
+* Questo handler ha il compito di gestire alcune interazioni tra il nodo corrente					*
+* e il broker del cluster kafka. In particolare vengono modellate due funzioni che permettono:		*
+* 	- la creazione di un nuovo topic																*
+* 	- l'invio di un messaggio di presentazione su un topic comune a tutti i nodi					*
+****************************************************************************************************/
+
 package handler
 
 import (

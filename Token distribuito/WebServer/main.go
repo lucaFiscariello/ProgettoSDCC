@@ -1,8 +1,8 @@
-/*************************************************************************************
-*	Web server che ospita la pagina web su cui pubblicare le notizie. La scrittura
-* 	delle notizie è affidata a un Sender il quale riceverà richieste di scrittura
-*	dai nodi della rete tramite grpc.
-**************************************************************************************/
+/************************************************************************************
+* Web server che ospita la pagina web su cui pubblicare le notizie. La scrittura	*
+* delle notizie è affidata a un Sender il quale riceverà richieste di scrittura		*
+* dai nodi della rete tramite grpc.													*
+*************************************************************************************/
 
 package main
 

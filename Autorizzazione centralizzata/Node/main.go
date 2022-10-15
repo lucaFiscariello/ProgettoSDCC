@@ -1,3 +1,16 @@
+/**************************************************************************************************
+* Main che contiene la logica principale del nodo. In questo programma il nodo:					  *
+* 	- Creerà i vari handler utili a gestire tutta la logica del nodo;							  *
+*	- Scaricherà tutti gli articoli relativi ad un determinato tema;							  *
+*	- Creerà un canale di comunicazione "privato" su kafka in cui riceverà messaggi di heartbeat  *
+*	  e messaggi che comunicano la ricezione del token;											  *
+*	- Avvierà listner che si metterà in ascolto dei messaggi di presentazione dei nuovi nodi che  *
+*	  si aggiungono alla rete;																	  *
+*	- Avvierà l'handler dell'heartbeat;															  *
+*	- Avvierà la comunicazione con gli altri nodi per coordinarsi e capire chi può accedere alla  *
+*	  sezione critica;																			  *
+**************************************************************************************************/
+
 package main
 
 import (
@@ -64,8 +77,6 @@ func main() {
 	//Attendo venga aperta la connessione Web socket.
 	waitConnectionWS()
 
-	Log.Println("Apertura connessione web socket.")
-
 	for i := 0; i < len(ALL_ARTICLE.Articles); {
 
 		isLeader, leaderID := serchLeader(handlerNode.GetNode())
@@ -118,6 +129,9 @@ func waitConnectionWS() {
 	//Attendo messaggio di "start" quando l'utente apre la pagina web
 	reader := kafka.NewReader(configReadNode)
 	reader.ReadMessage(context.Background())
+
+	Log.Println("Apertura connessione web socket.")
+
 }
 
 func serchLeader(allNode map[string]bool) (bool, string) {
