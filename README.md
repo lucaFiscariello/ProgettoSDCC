@@ -11,7 +11,7 @@ Per questo motivo si rende necessario l'utilizzo di un algoritmo per la mutua es
 ### Esecuzione
 
 ```bash
-cd Token Distribuito
+cd Algoritmi/Token Distribuito
 docker compose up --build
 ```
 
@@ -20,7 +20,7 @@ docker compose up --build
 ### Esecuzione
 
 ```bash
-cd Autorizzazione centralizzata
+cd Algoritmi/Autorizzazione centralizzata
 docker compose up --build
 ```
 
@@ -29,7 +29,7 @@ docker compose up --build
 ### Esecuzione
 
 ```bash
-cd Lamport distribuito
+cd Algoritmi/Lamport distribuito
 docker compose up --build
 ```
 
