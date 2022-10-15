@@ -20,7 +20,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://broker:29092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
-      KAFKA_CREATE_TOPICS: "presentation:1:1,heartbeat:1:1,start:1:1"
+      KAFKA_CREATE_TOPICS: "presentation:1:1,heartbeat:1:1,start:1:1,tokenRequest:1:1"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -39,6 +39,7 @@ services:
           PORT_KAFKA : ":29092"
           IP_KAFKA : "broker"
 
+
   node0:
       hostname: node0
       container_name: node0
@@ -53,6 +54,7 @@ services:
           IP_KAFKA : "broker"
           PRESENTATION_TOPIC : "presentation"
           HEARTBEAT_TOPIC : "heartbeat"
+          REQUEST_TOPIC : "Request"
           START_TOPIC : "start"
           ID_WS : "webServer:50051"
       depends_on:
@@ -73,6 +75,7 @@ services:
           IP_KAFKA : "broker"
           PRESENTATION_TOPIC : "presentation"
           HEARTBEAT_TOPIC : "heartbeat"
+          REQUEST_TOPIC : "Request"
           START_TOPIC : "start"
           ID_WS : "webServer:50051"
       depends_on:
@@ -93,6 +96,7 @@ services:
           IP_KAFKA : "broker"
           PRESENTATION_TOPIC : "presentation"
           HEARTBEAT_TOPIC : "heartbeat"
+          REQUEST_TOPIC : "Request"
           START_TOPIC : "start"
           ID_WS : "webServer:50051"
       depends_on:
@@ -106,7 +110,7 @@ services:
       build: ./Node
       environment:
           TIMEOUT : 20
-          TEMA : immobiliare
+          TEMA : bitcoin
           ID_NODE : node3
           APIKEY : 621d12b7ec5940a380a2b9b249329ff9
           URLTEMPLATE : http://newsapi.org/v2/everything?q=%s&apiKey=%s&language=it 
@@ -114,12 +118,12 @@ services:
           IP_KAFKA : "broker"
           PRESENTATION_TOPIC : "presentation"
           HEARTBEAT_TOPIC : "heartbeat"
+          REQUEST_TOPIC : "Request"
           START_TOPIC : "start"
           ID_WS : "webServer:50051"
       depends_on:
         - broker
         - webserver
-    
   
   
 

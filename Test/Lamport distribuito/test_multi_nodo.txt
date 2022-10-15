@@ -1,0 +1,95 @@
+//fase iniziale
+node3      | 2022/10/15 14:56:25 Nodo avviato correttamente
+node1      | 2022/10/15 14:56:25 Nodo avviato correttamente
+node2      | 2022/10/15 14:56:25 Nodo avviato correttamente
+node0      | 2022/10/15 14:56:25 Nodo avviato correttamente
+node3      | 2022/10/15 14:56:36 Apertura connessione web socket.
+node1      | 2022/10/15 14:56:36 Apertura connessione web socket.
+node2      | 2022/10/15 14:56:36 Apertura connessione web socket.
+node0      | 2022/10/15 14:56:36 Apertura connessione web socket.
+node1      | 2022/10/15 14:56:37 Il nodo corrente richiede di accedere alla sezione critica.
+node2      | 2022/10/15 14:56:37 Il nodo corrente richiede di accedere alla sezione critica.
+node3      | 2022/10/15 14:56:37 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 14:56:37 Il nodo corrente richiede di accedere alla sezione critica.
+node3      | 2022/10/15 14:56:38 Il nodo corrente riceve una nuova richiesta: {RequestLamport 1 node1}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node3} {RequestLamport 1 node1}]. Ack inviato
+node2      | 2022/10/15 14:56:38 Il nodo corrente riceve una nuova richiesta: {RequestLamport 1 node1}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node2} {RequestLamport 1 node1}]. Ack inviato
+node1      | 2022/10/15 14:56:38 Il nodo corrente riceve una nuova richiesta: {RequestLamport 1 node3}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node1} {RequestLamport 1 node3}]. Ack inviato
+node0      | 2022/10/15 14:56:38 Il nodo corrente riceve una nuova richiesta: {RequestLamport 1 node1}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node0} {RequestLamport 1 node1}]. Ack inviato
+node1      | 2022/10/15 14:56:38 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+
+//Il nodo 1 accede alla sezione critica
+node1      | 2022/10/15 14:56:38 Il nodo corrente accede alla sezione critica.
+node3      | 2022/10/15 14:56:39 Il nodo corrente riceve una nuova richiesta: {RequestLamport 1 node2}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node3} {RequestLamport 1 node1} {RequestLamport 1 node2}]. Ack inviato
+node2      | 2022/10/15 14:56:39 Il nodo corrente riceve una nuova richiesta: {RequestLamport 1 node3}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node2} {RequestLamport 1 node1} {RequestLamport 1 node3}]. Ack inviato
+node0      | 2022/10/15 14:56:39 Il nodo corrente riceve una nuova richiesta: {RequestLamport 1 node3}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node0} {RequestLamport 1 node1} {RequestLamport 1 node3}]. Ack inviato
+node1      | 2022/10/15 14:56:39 Il nodo corrente riceve una nuova richiesta: {RequestLamport 1 node2}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node1} {RequestLamport 1 node3} {RequestLamport 1 node2}]. Ack inviato
+node3      | 2022/10/15 14:56:39 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node1      | 2022/10/15 14:56:39 Il nodo corrente rilascia l'accesso alla sezione critica. [{RequestLamport 1 node1} {RequestLamport 1 node3} {RequestLamport 1 node2} {RequestLamport 1 node0}]
+node1      | 2022/10/15 14:56:40 Nodi attualmente attivi: map[node0:true node2:true node3:true]
+node3      | 2022/10/15 14:56:40 Il nodo corrente riceve una nuova richiesta: {RequestLamport 1 node0}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node3} {RequestLamport 1 node1} {RequestLamport 1 node2} {RequestLamport 1 node0}]. Ack inviato
+node3      | 2022/10/15 14:56:40 Accesso alla sezione critica rilasciato dal nodo: node1. Altre rihieste ancora attive: [{RequestLamport 1 node3} {RequestLamport 1 node2} {RequestLamport 1 node0}]
+node2      | 2022/10/15 14:56:40 Il nodo corrente riceve una nuova richiesta: {RequestLamport 1 node0}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node2} {RequestLamport 1 node1} {RequestLamport 1 node3} {RequestLamport 1 node0}]. Ack inviato
+node2      | 2022/10/15 14:56:40 Accesso alla sezione critica rilasciato dal nodo: node1. Altre rihieste ancora attive: [{RequestLamport 1 node2} {RequestLamport 1 node3} {RequestLamport 1 node0}]
+node0      | 2022/10/15 14:56:40 Il nodo corrente riceve una nuova richiesta: {RequestLamport 1 node2}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node0} {RequestLamport 1 node1} {RequestLamport 1 node3} {RequestLamport 1 node2}]. Ack inviato
+node0      | 2022/10/15 14:56:40 Accesso alla sezione critica rilasciato dal nodo: node1. Altre rihieste ancora attive: [{RequestLamport 1 node0} {RequestLamport 1 node3} {RequestLamport 1 node2}]
+node1      | 2022/10/15 14:56:40 Il nodo corrente riceve una nuova richiesta: {RequestLamport 1 node0}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node3} {RequestLamport 1 node2} {RequestLamport 1 node0}]. Ack inviato
+node2      | 2022/10/15 14:56:40 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 14:56:40 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+
+//Il nodo 1 accede alla sezione critica
+node0      | 2022/10/15 14:56:40 Il nodo corrente accede alla sezione critica.
+node1      | 2022/10/15 14:56:41 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 14:56:41 Il nodo corrente rilascia l'accesso alla sezione critica.
+node1      | 2022/10/15 14:56:41 Accesso alla sezione critica rilasciato dal nodo: node0. Altre rihieste ancora attive: [{RequestLamport 1 node3} {RequestLamport 1 node2} {RequestLamport 6 node1}]
+node0      | 2022/10/15 14:56:42 Il nodo corrente riceve una nuova richiesta: {RequestLamport 6 node1}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node3} {RequestLamport 1 node2} {RequestLamport 6 node1}]. Ack inviato
+node2      | 2022/10/15 14:56:42 Il nodo corrente riceve una nuova richiesta: {RequestLamport 6 node1}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node2} {RequestLamport 1 node3} {RequestLamport 1 node0} {RequestLamport 6 node1}]. Ack inviato
+node2      | 2022/10/15 14:56:42 Accesso alla sezione critica rilasciato dal nodo: node0. Altre rihieste ancora attive: [{RequestLamport 1 node2} {RequestLamport 1 node3} {RequestLamport 6 node1}]
+node3      | 2022/10/15 14:56:42 Il nodo corrente riceve una nuova richiesta: {RequestLamport 6 node1}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node3} {RequestLamport 1 node2} {RequestLamport 1 node0} {RequestLamport 6 node1}]. Ack inviato
+node1      | 2022/10/15 14:56:42 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node3      | 2022/10/15 14:56:42 Accesso alla sezione critica rilasciato dal nodo: node0. Altre rihieste ancora attive: [{RequestLamport 1 node3} {RequestLamport 1 node2} {RequestLamport 6 node1}]
+node0      | 2022/10/15 14:56:42 Nodi attualmente attivi: map[node1:true node2:true node3:true]
+
+//Il nodo 2 accede alla sezione critica
+node2      | 2022/10/15 14:56:43 Il nodo corrente accede alla sezione critica.
+node0      | 2022/10/15 14:56:43 Il nodo corrente richiede di accedere alla sezione critica.
+node2      | 2022/10/15 14:56:44 Il nodo corrente rilascia l'accesso alla sezione critica.
+node0      | 2022/10/15 14:56:44 Accesso alla sezione critica rilasciato dal nodo: node2. Altre rihieste ancora attive: [{RequestLamport 1 node3} {RequestLamport 6 node1} {RequestLamport 8 node0}]
+node2      | 2022/10/15 14:56:44 Il nodo corrente riceve una nuova richiesta: {RequestLamport 8 node0}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node3} {RequestLamport 6 node1} {RequestLamport 8 node0}]. Ack inviato
+node1      | 2022/10/15 14:56:44 Il nodo corrente riceve una nuova richiesta: {RequestLamport 8 node0}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node3} {RequestLamport 1 node2} {RequestLamport 6 node1} {RequestLamport 8 node0}]. Ack inviato
+node1      | 2022/10/15 14:56:44 Accesso alla sezione critica rilasciato dal nodo: node2. Altre rihieste ancora attive: [{RequestLamport 1 node3} {RequestLamport 6 node1} {RequestLamport 8 node0}]
+node3      | 2022/10/15 14:56:44 Il nodo corrente riceve una nuova richiesta: {RequestLamport 8 node0}. Attuamente le richieste in corso  sono: [{RequestLamport 1 node3} {RequestLamport 1 node2} {RequestLamport 6 node1} {RequestLamport 8 node0}]. Ack inviato
+node3      | 2022/10/15 14:56:44 Accesso alla sezione critica rilasciato dal nodo: node2. Altre rihieste ancora attive: [{RequestLamport 1 node3} {RequestLamport 6 node1} {RequestLamport 8 node0}]
+node0      | 2022/10/15 14:56:44 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+
+//Il nodo 3 accede alla sezione critica
+node3      | 2022/10/15 14:56:45 Il nodo corrente accede alla sezione critica.
+node2      | 2022/10/15 14:56:45 Nodi attualmente attivi: map[node0:true node1:true node3:true]
+node3      | 2022/10/15 14:56:46 Il nodo corrente rilascia l'accesso alla sezione critica.
+node2      | 2022/10/15 14:56:46 Accesso alla sezione critica rilasciato dal nodo: node3. Altre rihieste ancora attive: [{RequestLamport 6 node1} {RequestLamport 8 node0}]
+node1      | 2022/10/15 14:56:46 Accesso alla sezione critica rilasciato dal nodo: node3. Altre rihieste ancora attive: [{RequestLamport 6 node1} {RequestLamport 8 node0}]
+node0      | 2022/10/15 14:56:46 Accesso alla sezione critica rilasciato dal nodo: node3. Altre rihieste ancora attive: [{RequestLamport 6 node1} {RequestLamport 8 node0}]
+
+//Il nodo 1 accede alla sezione critica
+node1      | 2022/10/15 14:56:46 Il nodo corrente accede alla sezione critica.
+node2      | 2022/10/15 14:56:46 Il nodo corrente richiede di accedere alla sezione critica.
+node3      | 2022/10/15 14:56:47 Nodi attualmente attivi: map[node0:true node1:true node2:true]
+node1      | 2022/10/15 14:56:47 Il nodo corrente rilascia l'accesso alla sezione critica.
+node2      | 2022/10/15 14:56:47 Accesso alla sezione critica rilasciato dal nodo: node1. Altre rihieste ancora attive: [{RequestLamport 8 node0} {RequestLamport 10 node2}]
+node1      | 2022/10/15 14:56:47 Il nodo corrente riceve una nuova richiesta: {RequestLamport 10 node2}. Attuamente le richieste in corso  sono: [{RequestLamport 8 node0} {RequestLamport 10 node2}]. Ack inviato
+node0      | 2022/10/15 14:56:47 Il nodo corrente riceve una nuova richiesta: {RequestLamport 10 node2}. Attuamente le richieste in corso  sono: [{RequestLamport 6 node1} {RequestLamport 8 node0} {RequestLamport 10 node2}]. Ack inviato
+node0      | 2022/10/15 14:56:47 Accesso alla sezione critica rilasciato dal nodo: node1. Altre rihieste ancora attive: [{RequestLamport 8 node0} {RequestLamport 10 node2}]
+node3      | 2022/10/15 14:56:47 Il nodo corrente riceve una nuova richiesta: {RequestLamport 10 node2}. Attuamente le richieste in corso  sono: [{RequestLamport 6 node1} {RequestLamport 8 node0} {RequestLamport 10 node2}]. Ack inviato
+node2      | 2022/10/15 14:56:47 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node3      | 2022/10/15 14:56:47 Accesso alla sezione critica rilasciato dal nodo: node1. Altre rihieste ancora attive: [{RequestLamport 8 node0} {RequestLamport 10 node2}]
+
+//Il nodo 0 accede alla sezione critica
+node0      | 2022/10/15 14:56:47 Il nodo corrente accede alla sezione critica.
+node3      | 2022/10/15 14:56:48 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 14:56:48 Il nodo corrente rilascia l'accesso alla sezione critica.
+node3      | 2022/10/15 14:56:48 Accesso alla sezione critica rilasciato dal nodo: node0. Altre rihieste ancora attive: [{RequestLamport 10 node2} {RequestLamport 12 node3}]
+node1      | 2022/10/15 14:56:49 Il nodo corrente riceve una nuova richiesta: {RequestLamport 12 node3}. Attuamente le richieste in corso  sono: [{RequestLamport 8 node0} {RequestLamport 10 node2} {RequestLamport 12 node3}]. Ack inviato
+node1      | 2022/10/15 14:56:49 Accesso alla sezione critica rilasciato dal nodo: node0. Altre rihieste ancora attive: [{RequestLamport 10 node2} {RequestLamport 12 node3}]
+node0      | 2022/10/15 14:56:49 Il nodo corrente riceve una nuova richiesta: {RequestLamport 12 node3}. Attuamente le richieste in corso  sono: [{RequestLamport 10 node2} {RequestLamport 12 node3}]. Ack inviato
+node2      | 2022/10/15 14:56:49 Il nodo corrente riceve una nuova richiesta: {RequestLamport 12 node3}. Attuamente le richieste in corso  sono: [{RequestLamport 8 node0} {RequestLamport 10 node2} {RequestLamport 12 node3}]. Ack inviato
+node3      | 2022/10/15 14:56:49 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node2      | 2022/10/15 14:56:49 Accesso alla sezione critica rilasciato dal nodo: node0. Altre rihieste ancora attive: [{RequestLamport 10 node2} {RequestLamport 12 node3}]

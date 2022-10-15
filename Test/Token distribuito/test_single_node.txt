@@ -1,0 +1,87 @@
+//generazione del token
+node0      | 2022/10/15 15:43:35 Nodo avviato correttamente
+node0      | 2022/10/15 15:43:40 Apertura connessione browser
+node0      | 2022/10/15 15:43:40 Il nodo corrente è stato eletto leader
+node0      | 2022/10/15 15:43:40 Il nodo corrente invia controllo periodico per verificare se token checker è ancora attivo.
+node0      | 2022/10/15 15:43:41 Il token checker riceve richiesta token da node0. Token generato?(true/false) true
+node0      | 2022/10/15 15:43:42 Leader genera nuovo token?(true/false) true
+
+node0      | 2022/10/15 15:43:42 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:43:42 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:43:43 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:43:43 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:43:43 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:43:50 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:43:50 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:43:50 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:43:57 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:43:57 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:43:57 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:06 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:06 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:06 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:07 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:07 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:07 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:15 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:15 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:15 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:20 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:20 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:20 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:20 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:20 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:20 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:26 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:26 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:26 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:26 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:26 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:26 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:30 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:30 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:30 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:31 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:31 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:31 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:33 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:33 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:33 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:42 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:42 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:42 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:50 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:50 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:50 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:54 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:54 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:54 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:44:55 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:44:55 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:44:55 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:45:00 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:45:00 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:45:00 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:45:07 Nodi attualmente attivi: map[]
+
+node0      | 2022/10/15 15:45:07 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 15:45:07 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 15:45:13 Nodi attualmente attivi: map[]

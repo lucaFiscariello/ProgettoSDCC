@@ -1,0 +1,95 @@
+//Elezione leader
+node0      | 2022/10/15 16:40:51 Nodo avviato correttamente
+node1      | 2022/10/15 16:40:51 Nodo avviato correttamente
+node0      | 2022/10/15 16:40:56 Apertura connessione web socket.
+node0      | 2022/10/15 16:40:56 Il leader corrente è: node0
+node0      | 2022/10/15 16:40:56 Il nodo corrente è eletto leader
+node1      | 2022/10/15 16:40:56 Apertura connessione web socket.
+node1      | 2022/10/15 16:40:56 Il leader corrente è: node0
+
+node1      | 2022/10/15 16:40:57 Il node corrente richiede di entrare in sezione critica.
+node0      | 2022/10/15 16:40:57 Il leader riceve richiesta autorizzazione da: node1. Richiesta: {RequestAutorization node1 1}
+node0      | 2022/10/15 16:40:57 Attualmente la coda delle richieste contiene: []
+node0      | 2022/10/15 16:40:58 Il leader autorizza il nodo node1 ad accedere alla sezione critica
+node1      | 2022/10/15 16:40:59 Il nodo corrente invia un ack al leader.
+node1      | 2022/10/15 16:40:59 Il nodo corrente ottiene autorizzazione dal leader.
+node1      | 2022/10/15 16:40:59 Il nodo corrente accede alla sezione critica
+node0      | 2022/10/15 16:40:59 Il leader riceve l'ack dal nodo: node1
+node1      | 2022/10/15 16:41:00 Il nodo corrente rilascia l'autorizzazione
+node0      | 2022/10/15 16:41:00 Il leader riceve release dal nodo: node1
+node1      | 2022/10/15 16:41:04 Nodi attualmente attivi: map[node0:true]
+node1      | 2022/10/15 16:41:04 Il leader corrente è: node0
+
+node1      | 2022/10/15 16:41:05 Il node corrente richiede di entrare in sezione critica.
+node0      | 2022/10/15 16:41:05 Il leader riceve richiesta autorizzazione da: node1. Richiesta: {RequestAutorization node1 2}
+node0      | 2022/10/15 16:41:05 Attualmente la coda delle richieste contiene: []
+node0      | 2022/10/15 16:41:06 Il leader autorizza il nodo node1 ad accedere alla sezione critica
+node1      | 2022/10/15 16:41:07 Il nodo corrente invia un ack al leader.
+node1      | 2022/10/15 16:41:07 Il nodo corrente ottiene autorizzazione dal leader.
+node1      | 2022/10/15 16:41:07 Il nodo corrente accede alla sezione critica
+node0      | 2022/10/15 16:41:07 Il leader riceve l'ack dal nodo: node1
+node1      | 2022/10/15 16:41:08 Il nodo corrente rilascia l'autorizzazione
+node0      | 2022/10/15 16:41:08 Il leader riceve release dal nodo: node1
+node1      | 2022/10/15 16:41:12 Nodi attualmente attivi: map[node0:true]
+node1      | 2022/10/15 16:41:12 Il leader corrente è: node0
+
+node1      | 2022/10/15 16:41:13 Il node corrente richiede di entrare in sezione critica.
+node0      | 2022/10/15 16:41:13 Il leader riceve richiesta autorizzazione da: node1. Richiesta: {RequestAutorization node1 3}
+node0      | 2022/10/15 16:41:13 Attualmente la coda delle richieste contiene: []
+node0      | 2022/10/15 16:41:14 Il leader autorizza il nodo node1 ad accedere alla sezione critica
+node1      | 2022/10/15 16:41:15 Il nodo corrente invia un ack al leader.
+node1      | 2022/10/15 16:41:15 Il nodo corrente ottiene autorizzazione dal leader.
+node1      | 2022/10/15 16:41:15 Il nodo corrente accede alla sezione critica
+node0      | 2022/10/15 16:41:15 Il leader riceve l'ack dal nodo: node1
+node1      | 2022/10/15 16:41:16 Il nodo corrente rilascia l'autorizzazione
+node0      | 2022/10/15 16:41:16 Il leader riceve release dal nodo: node1
+node1      | 2022/10/15 16:41:20 Nodi attualmente attivi: map[node0:true]
+node1      | 2022/10/15 16:41:20 Il leader corrente è: node0
+
+node1      | 2022/10/15 16:41:21 Il node corrente richiede di entrare in sezione critica.
+node0      | 2022/10/15 16:41:21 Il leader riceve richiesta autorizzazione da: node1. Richiesta: {RequestAutorization node1 4}
+node0      | 2022/10/15 16:41:21 Attualmente la coda delle richieste contiene: []
+node0      | 2022/10/15 16:41:22 Il leader autorizza il nodo node1 ad accedere alla sezione critica
+node1      | 2022/10/15 16:41:23 Il nodo corrente invia un ack al leader.
+node1      | 2022/10/15 16:41:23 Il nodo corrente ottiene autorizzazione dal leader.
+node1      | 2022/10/15 16:41:23 Il nodo corrente accede alla sezione critica
+node0      | 2022/10/15 16:41:23 Il leader riceve l'ack dal nodo: node1
+node1      | 2022/10/15 16:41:24 Il nodo corrente rilascia l'autorizzazione
+node0      | 2022/10/15 16:41:24 Il leader riceve release dal nodo: node1
+node1      | 2022/10/15 16:41:28 Nodi attualmente attivi: map[node0:true]
+node1      | 2022/10/15 16:41:28 Il leader corrente è: node0
+
+node1      | 2022/10/15 16:41:29 Il node corrente richiede di entrare in sezione critica.
+node0      | 2022/10/15 16:41:29 Il leader riceve richiesta autorizzazione da: node1. Richiesta: {RequestAutorization node1 5}
+node0      | 2022/10/15 16:41:29 Attualmente la coda delle richieste contiene: []
+node0      | 2022/10/15 16:41:30 Il leader autorizza il nodo node1 ad accedere alla sezione critica
+node1      | 2022/10/15 16:41:31 Il nodo corrente invia un ack al leader.
+node1      | 2022/10/15 16:41:31 Il nodo corrente ottiene autorizzazione dal leader.
+node1      | 2022/10/15 16:41:31 Il nodo corrente accede alla sezione critica
+webServer  | server invia L'ultima guerra tra il Ghiaccio e il Fuoco
+node0      | 2022/10/15 16:41:31 Il leader riceve l'ack dal nodo: node1
+node1      | 2022/10/15 16:41:32 Il nodo corrente rilascia l'autorizzazione
+node0      | 2022/10/15 16:41:32 Il leader riceve release dal nodo: node1
+node1      | 2022/10/15 16:41:36 Nodi attualmente attivi: map[node0:true]
+node1      | 2022/10/15 16:41:36 Il leader corrente è: node0
+
+node1      | 2022/10/15 16:41:37 Il node corrente richiede di entrare in sezione critica.
+node0      | 2022/10/15 16:41:37 Il leader riceve richiesta autorizzazione da: node1. Richiesta: {RequestAutorization node1 6}
+node0      | 2022/10/15 16:41:37 Attualmente la coda delle richieste contiene: []
+node0      | 2022/10/15 16:41:38 Il leader autorizza il nodo node1 ad accedere alla sezione critica
+node1      | 2022/10/15 16:41:39 Il nodo corrente invia un ack al leader.
+node1      | 2022/10/15 16:41:39 Il nodo corrente ottiene autorizzazione dal leader.
+node1      | 2022/10/15 16:41:39 Il nodo corrente accede alla sezione critica
+webServer  | server invia L’avventura di Georges Bataille sull’Etna
+node0      | 2022/10/15 16:41:39 Il leader riceve l'ack dal nodo: node1
+node1      | 2022/10/15 16:41:40 Il nodo corrente rilascia l'autorizzazione
+node0      | 2022/10/15 16:41:40 Il leader riceve release dal nodo: node1
+node1      | 2022/10/15 16:41:44 Nodi attualmente attivi: map[node0:true]
+node1      | 2022/10/15 16:41:44 Il leader corrente è: node0
+
+node1      | 2022/10/15 16:41:45 Il node corrente richiede di entrare in sezione critica.
+node0      | 2022/10/15 16:41:45 Il leader riceve richiesta autorizzazione da: node1. Richiesta: {RequestAutorization node1 7}
+node0      | 2022/10/15 16:41:45 Attualmente la coda delle richieste contiene: []
+node0      | 2022/10/15 16:41:46 Il leader autorizza il nodo node1 ad accedere alla sezione critica
+node0      | 2022/10/15 16:41:46 Il leader riceve l'ack dal nodo: node1
+node0      | 2022/10/15 16:41:46 Il leader riceve release dal nodo: node1

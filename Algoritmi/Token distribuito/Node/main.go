@@ -20,6 +20,7 @@ import (
 	pb "fiscariello/luca/node/stub"
 	"fmt"
 	"math"
+	"math/rand"
 	"os"
 	"regexp"
 	"strconv"
@@ -73,13 +74,14 @@ func main() {
 
 	go handlerNode.StartListnerNewNode()                                     // Creo un goroutine che si mette in ascolto di nuovi messaggi di presentazione
 	go handlerHeartBeat.StartHeartBeatHandler(HEARTBEAT_TOPIC, &handlerNode) // Avvio il gestore dell'heart beat
-	go listenToken(&handlerToken)                                            // Avvio il listner che si mette in ascolto per l'arrivo del token
+	go handlerToken.ListenReceveToken()                                      // Avvio il listner che si mette in ascolto per l'arrivo del token
 
 	Log.Println("Nodo avviato correttamente")
 
 	//Attendo apertura connessione pagina web
 	waitConnectionWS()
 
+	cycleWhitoutToken := 0
 	for i := 0; i < len(ALL_ARTICLE.Articles); {
 
 		//Ricerco leader. Se il nodo corrente è il leader avvia il gestore del token.
@@ -92,22 +94,32 @@ func main() {
 			go checkerToken.Start()
 		}
 
-		//Se il nodo possiede il token puo accedere alla sezione critica
-		haveToken := handlerToken.RequestToken(leaderID)
+		haveToken := handlerToken.HaveToken()
 		if haveToken {
+
+			//Se il nodo possiede il token puo accedere alla sezione critica
+			cycleWhitoutToken = 0
 
 			Log.Println("Il nodo corrente entra in sezione critica")
 			sendMessage(ALL_ARTICLE.Articles[i])
 
-			if handlerNode.GetNumberNode() > 0 {
+			if handlerNode.GetNumberNode() >= 1 {
 				handlerToken.SendToken(handlerNode.GetNode())
 			}
 
-			handlerToken.TOKEN = false
 			i++
+		} else {
+
+			//Se il nodo non possiede il token dopo un certo numero di cilci richiede la generazione
+			cycleWhitoutToken = cycleWhitoutToken + 1
+			if cycleWhitoutToken > handlerNode.GetNumberNode() {
+				handlerToken.RequestGenerateToken(leaderID)
+			}
 		}
 
-		time.Sleep(4 * time.Second)
+		time.Sleep(time.Duration(rand.Intn(10)) * time.Second)
+		Log.Println("Nodi attualmente attivi: " + fmt.Sprint(handlerNode.GetNode()))
+
 	}
 
 }
@@ -118,17 +130,6 @@ func waitStartNode() {
 	time.Sleep(time.Duration(timeout) * time.Second)
 }
 
-func listenToken(handlerToken *H.TokenHandler) {
-	channel := make(chan bool)
-	go handlerToken.ListenReceveToken(channel)
-
-	for {
-		token := <-channel
-		handlerToken.TOKEN = token
-		handlerToken.SendHackToken(leaderID)
-	}
-
-}
 func waitConnectionWS() {
 	configReadNode := kafka.ReaderConfig{
 		Brokers:  []string{URLKAFKA},
@@ -167,7 +168,7 @@ func sendMessage(article H.Article) {
 func serchLeader(allNode map[string]bool) (bool, string) {
 
 	minID := math.MaxInt64
-	var minIDStr string
+	var minIDStr = ID_NODE
 	var isLeader = false
 
 	for nodeId, isActive := range allNode {
@@ -188,7 +189,7 @@ func serchLeader(allNode map[string]bool) (bool, string) {
 
 	}
 
-	if ID_NODE < minIDStr {
+	if ID_NODE <= minIDStr || len(allNode) == 0 {
 		minIDStr = ID_NODE
 		isLeader = true
 	}

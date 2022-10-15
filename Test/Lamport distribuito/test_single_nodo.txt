@@ -1,0 +1,75 @@
+node0      | 2022/10/15 15:08:32 Nodo avviato correttamente
+node0      | 2022/10/15 15:08:42 Apertura connessione web socket.
+node0      | 2022/10/15 15:08:43 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:08:43 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:08:43 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:08:44 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:08:45 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:08:45 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:08:45 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:08:52 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:08:53 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:08:53 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:08:53 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:09:00 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:09:01 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:09:01 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:09:01 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:09:10 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:09:11 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:09:11 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:09:11 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:09:12 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:09:13 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:09:13 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:09:13 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:09:21 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:09:22 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:09:22 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:09:22 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:09:27 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:09:28 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:09:28 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:09:28 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:09:28 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:09:29 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:09:29 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:09:29 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:09:35 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:09:36 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:09:36 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:09:36 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:09:36 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:09:37 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:09:37 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:09:37 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:09:41 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:09:42 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:09:42 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:09:42 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:09:43 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:09:44 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:09:44 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:09:44 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:09:46 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:09:47 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:09:47 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:09:47 Il nodo corrente accede alla sezione critica.
+
+node0      | 2022/10/15 15:09:56 Nodi attualmente attivi: map[]
+node0      | 2022/10/15 15:09:57 Il nodo corrente richiede di accedere alla sezione critica.
+node0      | 2022/10/15 15:09:57 Il nodo corrente ha ricevuto l'ack da tutti i nodi.
+node0      | 2022/10/15 15:09:57 Il nodo corrente accede alla sezione critica.

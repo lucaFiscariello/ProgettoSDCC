@@ -27,7 +27,6 @@ const (
 type TokenHandler struct {
 	Url     string
 	ID_NODE string
-	TOKEN   bool
 }
 
 type HandlerTK interface {
@@ -37,6 +36,7 @@ type HandlerTK interface {
 
 var Id_message = 0
 var reader *kafka.Reader = nil
+var TOKEN = false
 
 /*
  * Questa funzione selezione il prossimo nodo attivo a cui inviare il token. La scelta è fatta in maniera ciclica.
@@ -77,7 +77,7 @@ func (h TokenHandler) SendToken(is_active map[string]bool) {
 			writer.WriteMessages(context.Background(), kafka.Message{Value: messageByte})
 
 			Log.Println("Il nodo corrente invia il token a: " + idToSend + ". Gli altri nodi della rete sono: " + fmt.Sprint(is_active))
-
+			TOKEN = false
 			return
 		}
 	}
@@ -86,7 +86,7 @@ func (h TokenHandler) SendToken(is_active map[string]bool) {
 /*
  * Questa funzione si mette in ascolto di messaggi di consegna del token.
  */
-func (h TokenHandler) ListenReceveToken(channel chan bool) {
+func (h TokenHandler) ListenReceveToken() {
 	configRead := kafka.ReaderConfig{
 		Brokers:  []string{h.Url},
 		Topic:    h.ID_NODE,
@@ -102,7 +102,7 @@ func (h TokenHandler) ListenReceveToken(channel chan bool) {
 
 		if messageReceved.TypeMessage == Token {
 			Log.Println("Il nodo corrente riceve token da: " + messageReceved.Id_node)
-			channel <- true
+			TOKEN = true
 		}
 	}
 
@@ -112,7 +112,7 @@ func (h TokenHandler) ListenReceveToken(channel chan bool) {
  * Questa funzione richiede la generazione del token quando necessario. L'output è booleano.
  * La generazione potrebbe non essere concessa.
  */
-func (h TokenHandler) RequestToken(leaderID string) bool {
+func (h TokenHandler) RequestGenerateToken(leaderID string) bool {
 
 	configWrite := kafka.WriterConfig{
 		Brokers: []string{h.Url},
@@ -120,14 +120,14 @@ func (h TokenHandler) RequestToken(leaderID string) bool {
 
 	writerLeader := kafka.NewWriter(configWrite)
 
-	if h.TOKEN {
+	if TOKEN {
 		return true
 	}
 
 	var messageReceved Message
 	Id_message = Id_message + 1
 
-	Log.Println("Il nodo corrente invia controllo periodico per verificare se token checker è ancora attivo.")
+	Log.Println("Il nodo corrente chiede creazione nuovo token.")
 
 	message := Message{TypeMessage: TokenRequest, Id_node: h.ID_NODE, Id_message: Id_message}
 	messageByte, _ := json.Marshal(message)
@@ -148,7 +148,7 @@ func (h TokenHandler) RequestToken(leaderID string) bool {
 
 		if messageReceved.TypeMessage == TokenResponse && messageReceved.Id_message == Id_message {
 			Log.Println("Leader genera nuovo token?(true/false) " + strconv.FormatBool(messageReceved.ConcessToken))
-			h.TOKEN = messageReceved.ConcessToken
+			TOKEN = messageReceved.ConcessToken
 			return messageReceved.ConcessToken
 		}
 	}
@@ -173,6 +173,11 @@ func (h TokenHandler) SendHackToken(leaderID string) {
 
 	Log.Println("Il nodo corrente invia un ack dopo la ricezione del token al leader: " + leaderID)
 
+}
+
+func (h TokenHandler) HaveToken() bool {
+	time.Sleep(1 * time.Second)
+	return TOKEN
 }
 
 func (h TokenHandler) singletonReader() {

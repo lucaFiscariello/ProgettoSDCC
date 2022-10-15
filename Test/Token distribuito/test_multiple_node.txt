@@ -1,0 +1,258 @@
+// generazione token
+node0      | 2022/10/15 16:21:34 Nodo avviato correttamente
+node1      | 2022/10/15 16:21:34 Nodo avviato correttamente
+node2      | 2022/10/15 16:21:35 Nodo avviato correttamente
+node3      | 2022/10/15 16:21:35 Nodo avviato correttamente
+node1      | 2022/10/15 16:21:43 Apertura connessione browser
+node3      | 2022/10/15 16:21:43 Apertura connessione browser
+node0      | 2022/10/15 16:21:43 Apertura connessione browser
+node0      | 2022/10/15 16:21:43 Il nodo corrente è stato eletto leader
+node2      | 2022/10/15 16:21:43 Apertura connessione browser
+node3      | 2022/10/15 16:21:45 Nodi attualmente attivi: map[node0:true node1:true node2:true]
+node1      | 2022/10/15 16:21:45 Nodi attualmente attivi: map[node0:true node2:true node3:true]
+node2      | 2022/10/15 16:21:45 Nodi attualmente attivi: map[node0:true node1:true node3:true]
+node0      | 2022/10/15 16:21:45 Nodi attualmente attivi: map[node1:true node2:true node3:true]
+node1      | 2022/10/15 16:21:53 Nodi attualmente attivi: map[node0:true node2:true node3:true]
+node3      | 2022/10/15 16:21:53 Nodi attualmente attivi: map[node0:true node1:true node2:true]
+node2      | 2022/10/15 16:21:53 Nodi attualmente attivi: map[node0:true node1:true node3:true]
+node0      | 2022/10/15 16:21:53 Nodi attualmente attivi: map[node1:true node2:true node3:true]
+node3      | 2022/10/15 16:22:01 Nodi attualmente attivi: map[node0:true node1:true node2:true]
+node1      | 2022/10/15 16:22:01 Nodi attualmente attivi: map[node0:true node2:true node3:true]
+node2      | 2022/10/15 16:22:01 Nodi attualmente attivi: map[node0:true node1:true node3:true]
+node0      | 2022/10/15 16:22:01 Nodi attualmente attivi: map[node1:true node2:true node3:true]
+node1      | 2022/10/15 16:22:02 Il nodo corrente chiede creazione nuovo token.
+node3      | 2022/10/15 16:22:02 Il nodo corrente chiede creazione nuovo token.
+node0      | 2022/10/15 16:22:02 Il nodo corrente chiede creazione nuovo token.
+node2      | 2022/10/15 16:22:02 Il nodo corrente chiede creazione nuovo token.
+node0      | 2022/10/15 16:22:03 Il token checker riceve richiesta token da node0. Token generato?(true/false) true
+node0      | 2022/10/15 16:22:04 Il token checker riceve richiesta token da node2. Token generato?(true/false) false
+node0      | 2022/10/15 16:22:04 Leader genera nuovo token?(true/false) true
+node0      | 2022/10/15 16:22:05 Il token checker riceve richiesta token da node3. Token generato?(true/false) false
+node2      | 2022/10/15 16:22:05 Leader genera nuovo token?(true/false) false
+node0      | 2022/10/15 16:22:06 Il token checker riceve richiesta token da node1. Token generato?(true/false) false
+node3      | 2022/10/15 16:22:06 Leader genera nuovo token?(true/false) false
+node1      | 2022/10/15 16:22:07 Leader genera nuovo token?(true/false) false
+node0      | 2022/10/15 16:22:13 Nodi attualmente attivi: map[node1:true node2:true node3:true]
+
+//Il node 0 entra in sezione critica
+node0      | 2022/10/15 16:22:14 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 16:22:14 Scrittura avvenuta correttamente sulla web page
+node2      | 2022/10/15 16:22:14 Nodi attualmente attivi: map[node0:true node1:true node3:true]
+node0      | 2022/10/15 16:22:15 Il nodo corrente invia il token a: node1. Gli altri nodi della rete sono: map[node1:true node2:true node3:true]
+
+//Il node 1 entra in sezione critica
+node1      | 2022/10/15 16:22:15 Il nodo corrente riceve token da: node0
+node2      | 2022/10/15 16:22:15 Il nodo corrente chiede creazione nuovo token.
+node3      | 2022/10/15 16:22:15 Nodi attualmente attivi: map[node0:true node1:true node2:true]
+node0      | 2022/10/15 16:22:16 Nodi attualmente attivi: map[node1:true node2:true node3:true]
+node0      | 2022/10/15 16:22:16 Il token checker riceve richiesta token da node2. Token generato?(true/false) false
+node3      | 2022/10/15 16:22:16 Il nodo corrente chiede creazione nuovo token.
+node1      | 2022/10/15 16:22:16 Nodi attualmente attivi: map[node0:true node2:true node3:true]
+node2      | 2022/10/15 16:22:17 Leader genera nuovo token?(true/false) false
+node1      | 2022/10/15 16:22:17 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 16:22:17 Il token checker riceve richiesta token da node3. Token generato?(true/false) false
+node1      | 2022/10/15 16:22:17 Scrittura avvenuta correttamente sulla web page
+node2      | 2022/10/15 16:22:18 Nodi attualmente attivi: map[node0:true node1:true node3:true]
+
+//Il node 2 entra in sezione critica
+node1      | 2022/10/15 16:22:18 Il nodo corrente invia il token a: node2. Gli altri nodi della rete sono: map[node0:true node2:true node3:true]
+node2      | 2022/10/15 16:22:18 Il nodo corrente riceve token da: node1
+node3      | 2022/10/15 16:22:18 Leader genera nuovo token?(true/false) false
+node2      | 2022/10/15 16:22:19 Il nodo corrente entra in sezione critica
+node2      | 2022/10/15 16:22:19 Scrittura avvenuta correttamente sulla web page
+node1      | 2022/10/15 16:22:19 Nodi attualmente attivi: map[node0:true node2:true node3:true]
+node3      | 2022/10/15 16:22:19 Nodi attualmente attivi: map[node0:true node1:true node2:true]
+node2      | 2022/10/15 16:22:20 Il nodo corrente invia il token a: node3. Gli altri nodi della rete sono: map[node0:true node1:true node3:true]
+
+//Il node 3 entra in sezione critica
+node3      | 2022/10/15 16:22:20 Il nodo corrente riceve token da: node2
+node3      | 2022/10/15 16:22:20 Il nodo corrente entra in sezione critica
+node3      | 2022/10/15 16:22:20 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 16:22:21 Il nodo corrente riceve token da: node3
+node3      | 2022/10/15 16:22:21 Il nodo corrente invia il token a: node0. Gli altri nodi della rete sono: map[node0:true node1:true node2:true]
+node0      | 2022/10/15 16:22:25 Nodi attualmente attivi: map[node1:true node2:true node3:true]
+
+//Il node 0 entra in sezione critica
+node0      | 2022/10/15 16:22:26 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 16:22:26 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 16:22:27 Il nodo corrente invia il token a: node1. Gli altri nodi della rete sono: map[node1:true node2:true node3:true]
+
+//Il node 1 entra in sezione critica
+node1      | 2022/10/15 16:22:27 Il nodo corrente riceve token da: node0
+node2      | 2022/10/15 16:22:28 Nodi attualmente attivi: map[node0:true node1:true node3:true]
+node1      | 2022/10/15 16:22:28 Nodi attualmente attivi: map[node0:true node2:true node3:true]
+node1      | 2022/10/15 16:22:29 Il nodo corrente entra in sezione critica
+node1      | 2022/10/15 16:22:29 Scrittura avvenuta correttamente sulla web page
+node3      | 2022/10/15 16:22:29 Nodi attualmente attivi: map[node0:true node1:true node2:true]
+
+//Il node 2 entra in sezione critica
+node1      | 2022/10/15 16:22:30 Il nodo corrente invia il token a: node2. Gli altri nodi della rete sono: map[node0:true node2:true node3:true]
+node2      | 2022/10/15 16:22:30 Il nodo corrente riceve token da: node1
+node0      | 2022/10/15 16:22:32 Nodi attualmente attivi: map[node1:true node2:true node3:true]
+node0      | 2022/10/15 16:22:33 Nodi attualmente attivi: map[node1:true node2:true node3:true]
+node2      | 2022/10/15 16:22:34 Nodi attualmente attivi: map[node0:true node1:true node3:true]
+node2      | 2022/10/15 16:22:35 Il nodo corrente entra in sezione critica
+node2      | 2022/10/15 16:22:35 Scrittura avvenuta correttamente sulla web page
+node3      | 2022/10/15 16:22:35 Nodi attualmente attivi: map[node0:true node1:true node2:true]
+node1      | 2022/10/15 16:22:35 Nodi attualmente attivi: map[node0:true node2:true node3:true]
+
+//Il node 3 entra in sezione critica
+node2      | 2022/10/15 16:22:36 Il nodo corrente invia il token a: node3. Gli altri nodi della rete sono: map[node0:true node1:true node3:true]
+node2      | 2022/10/15 16:22:36 Nodi attualmente attivi: map[node0:true node1:true node3:true]
+node3      | 2022/10/15 16:22:36 Il nodo corrente riceve token da: node2
+node3      | 2022/10/15 16:22:36 Il nodo corrente entra in sezione critica
+node1      | 2022/10/15 16:22:36 Nodi attualmente attivi: map[node0:true node2:true node3:true]
+node3      | 2022/10/15 16:22:36 Scrittura avvenuta correttamente sulla web page
+node0      | 2022/10/15 16:22:37 Il nodo corrente riceve token da: node3
+
+//Il node 0 entra in sezione critica
+node3      | 2022/10/15 16:22:37 Il nodo corrente invia il token a: node0. Gli altri nodi della rete sono: map[node0:true node1:true node2:true]
+node3      | 2022/10/15 16:22:37 Nodi attualmente attivi: map[node0:true node1:true node2:true]
+node0      | 2022/10/15 16:22:40 Nodi attualmente attivi: map[node1:true node2:true node3:true]
+node0      | 2022/10/15 16:22:41 Il nodo corrente entra in sezione critica
+node0      | 2022/10/15 16:22:41 Scrittura avvenuta correttamente sulla web page
+
+//Il node 1 entra in sezione critica
+node0      | 2022/10/15 16:22:42 Il nodo corrente invia il token a: node1. Gli altri nodi della rete sono: map[node1:true node2:true node3:true]
+node0      | 2022/10/15 16:22:42 Nodi attualmente attivi: map[node1:true node2:true node3:true]
+node1      | 2022/10/15 16:22:42 Il nodo corrente riceve token da: node0
+
+node0 exited with code 2
+
+// elezione nuovo leader
+node2      | 2022/10/15 16:22:43 Nodi attualmente attivi: map[node0:true node1:true node3:true]
+node1      | 2022/10/15 16:22:43 Nodi attualmente attivi: map[node0:true node2:true node3:true]
+node2      | 2022/10/15 16:22:44 Nodi attualmente attivi: map[node0:true node1:true node3:true]
+node1      | 2022/10/15 16:22:44 Il nodo corrente entra in sezione critica
+node1      | 2022/10/15 16:22:44 Scrittura avvenuta correttamente sulla web page
+node3      | 2022/10/15 16:22:44 Nodi attualmente attivi: map[node0:true node1:true node2:true]
+node1      | 2022/10/15 16:22:45 Il nodo corrente invia il token a: node2. Gli altri nodi della rete sono: map[node0:true node2:true node3:true]
+node1      | 2022/10/15 16:22:45 Nodi attualmente attivi: map[node0:true node2:true node3:true]
+node2      | 2022/10/15 16:22:45 Il nodo corrente riceve token da: node1
+node3      | 2022/10/15 16:22:45 Nodi attualmente attivi: map[node0:true node1:true node2:true]
+node2      | 2022/10/15 16:22:49 Nodi attualmente attivi: map[node0:true node1:true node3:true]
+node2      | 2022/10/15 16:22:50 Il nodo corrente entra in sezione critica
+node2      | 2022/10/15 16:22:50 Scrittura avvenuta correttamente sulla web page
+node1      | 2022/10/15 16:22:50 Nodi attualmente attivi: map[node0:false node2:true node3:true]
+node1      | 2022/10/15 16:22:50 Il nodo corrente è stato eletto leader
+node3      | 2022/10/15 16:22:50 Nodi attualmente attivi: map[node0:false node1:true node2:true]
+
+//Il node 3 entra in sezione critica
+node2      | 2022/10/15 16:22:51 Il nodo corrente invia il token a: node3. Gli altri nodi della rete sono: map[node0:true node1:true node3:true]
+node3      | 2022/10/15 16:22:51 Il nodo corrente riceve token da: node2
+node3      | 2022/10/15 16:22:51 Il nodo corrente entra in sezione critica
+node3      | 2022/10/15 16:22:51 Scrittura avvenuta correttamente sulla web page
+node2      | 2022/10/15 16:22:52 Nodi attualmente attivi: map[node0:false node1:true node3:true]
+node1      | 2022/10/15 16:22:52 Nodi attualmente attivi: map[node0:false node2:true node3:true]
+
+//Il node 1 entra in sezione critica
+node3      | 2022/10/15 16:22:52 Il nodo corrente invia il token a: node1. Gli altri nodi della rete sono: map[node0:false node1:true node2:true]
+node1      | 2022/10/15 16:22:52 Il nodo corrente riceve token da: node3
+node1      | 2022/10/15 16:22:53 Il nodo corrente entra in sezione critica
+node1      | 2022/10/15 16:22:53 Scrittura avvenuta correttamente sulla web page
+node3      | 2022/10/15 16:22:53 Nodi attualmente attivi: map[node0:false node1:true node2:true]
+
+//Il node 2 entra in sezione critica
+node1      | 2022/10/15 16:22:54 Il nodo corrente invia il token a: node2. Gli altri nodi della rete sono: map[node0:false node2:true node3:true]
+node2      | 2022/10/15 16:22:54 Il nodo corrente riceve token da: node1
+node2      | 2022/10/15 16:22:55 Nodi attualmente attivi: map[node0:false node1:true node3:true]
+node2      | 2022/10/15 16:22:56 Il nodo corrente entra in sezione critica
+node2      | 2022/10/15 16:22:56 Scrittura avvenuta correttamente sulla web page
+node1      | 2022/10/15 16:22:56 Nodi attualmente attivi: map[node0:false node2:true node3:true]
+node3      | 2022/10/15 16:22:56 Nodi attualmente attivi: map[node0:false node1:true node2:true]
+
+//Il node 3 entra in sezione critica
+node2      | 2022/10/15 16:22:57 Il nodo corrente invia il token a: node3. Gli altri nodi della rete sono: map[node0:false node1:true node3:true]
+node3      | 2022/10/15 16:22:57 Il nodo corrente riceve token da: node2
+node3      | 2022/10/15 16:22:57 Il nodo corrente entra in sezione critica
+node3      | 2022/10/15 16:22:57 Scrittura avvenuta correttamente sulla web page
+
+//Il node 1 entra in sezione critica
+node3      | 2022/10/15 16:22:58 Il nodo corrente invia il token a: node1. Gli altri nodi della rete sono: map[node0:false node1:true node2:true]
+node1      | 2022/10/15 16:22:58 Il nodo corrente riceve token da: node3
+
+node2 exited with code 2
+
+node1      | 2022/10/15 16:23:06 Nodi attualmente attivi: map[node0:false node2:true node3:true]
+node1      | 2022/10/15 16:23:07 Il nodo corrente entra in sezione critica
+node1      | 2022/10/15 16:23:07 Scrittura avvenuta correttamente sulla web page
+node3      | 2022/10/15 16:23:07 Nodi attualmente attivi: map[node0:false node1:true node2:true]
+
+//Il node 2 riceve token ma non è attivo
+node1      | 2022/10/15 16:23:08 Il nodo corrente invia il token a: node2. Gli altri nodi della rete sono: map[node0:false node2:true node3:true]
+node3      | 2022/10/15 16:23:16 Nodi attualmente attivi: map[node0:false node1:true node2:false]
+node1      | 2022/10/15 16:23:16 Nodi attualmente attivi: map[node0:false node2:false node3:true]
+node3      | 2022/10/15 16:23:21 Nodi attualmente attivi: map[node0:false node1:true node2:false]
+node1      | 2022/10/15 16:23:21 Nodi attualmente attivi: map[node0:false node2:false node3:true]
+node3      | 2022/10/15 16:23:23 Nodi attualmente attivi: map[node0:false node1:true node2:false]
+node1      | 2022/10/15 16:23:23 Nodi attualmente attivi: map[node0:false node2:false node3:true]
+node3      | 2022/10/15 16:23:24 Il nodo corrente chiede creazione nuovo token.
+
+//generazione nuovo token
+node1      | 2022/10/15 16:23:25 Il token checker riceve richiesta token da node3. Token generato?(true/false) true
+node3      | 2022/10/15 16:23:26 Leader genera nuovo token?(true/false) true
+node1      | 2022/10/15 16:23:29 Nodi attualmente attivi: map[node0:false node2:false node3:true]
+node1      | 2022/10/15 16:23:30 Il nodo corrente chiede creazione nuovo token.
+node3      | 2022/10/15 16:23:31 Nodi attualmente attivi: map[node0:false node1:true node2:false]
+node1      | 2022/10/15 16:23:31 Il token checker riceve richiesta token da node1. Token generato?(true/false) false
+node3      | 2022/10/15 16:23:32 Il nodo corrente entra in sezione critica
+node3      | 2022/10/15 16:23:32 Scrittura avvenuta correttamente sulla web page
+node1      | 2022/10/15 16:23:32 Leader genera nuovo token?(true/false) false
+
+//Il node 1 entra in sezione critica
+node3      | 2022/10/15 16:23:33 Il nodo corrente invia il token a: node1. Gli altri nodi della rete sono: map[node0:false node1:true node2:false]
+node1      | 2022/10/15 16:23:33 Il nodo corrente riceve token da: node3
+node1      | 2022/10/15 16:23:39 Nodi attualmente attivi: map[node0:false node2:false node3:true]
+node3      | 2022/10/15 16:23:40 Nodi attualmente attivi: map[node0:false node1:true node2:false]
+node1      | 2022/10/15 16:23:40 Il nodo corrente entra in sezione critica
+node1      | 2022/10/15 16:23:40 Scrittura avvenuta correttamente sulla web page
+
+//Il node 3 entra in sezione critica
+node1      | 2022/10/15 16:23:41 Il nodo corrente invia il token a: node3. Gli altri nodi della rete sono: map[node0:false node2:false node3:true]
+node3      | 2022/10/15 16:23:41 Il nodo corrente riceve token da: node1
+node3      | 2022/10/15 16:23:47 Nodi attualmente attivi: map[node0:false node1:true node2:false]
+node1      | 2022/10/15 16:23:47 Nodi attualmente attivi: map[node0:false node2:false node3:true]
+node3      | 2022/10/15 16:23:48 Il nodo corrente entra in sezione critica
+node3      | 2022/10/15 16:23:48 Scrittura avvenuta correttamente sulla web page
+
+//Il node 1 entra in sezione critica
+node3      | 2022/10/15 16:23:49 Il nodo corrente invia il token a: node1. Gli altri nodi della rete sono: map[node0:false node1:true node2:false]
+node1      | 2022/10/15 16:23:49 Il nodo corrente riceve token da: node3
+node1      | 2022/10/15 16:23:53 Nodi attualmente attivi: map[node0:false node2:false node3:true]
+node3      | 2022/10/15 16:23:54 Nodi attualmente attivi: map[node0:false node1:true node2:false]
+node1      | 2022/10/15 16:23:54 Il nodo corrente entra in sezione critica
+webServer  | server invia Fedez e Chiara Ferragni, una foto nudi a letto: il web si divide
+node1      | 2022/10/15 16:23:54 Scrittura avvenuta correttamente sulla web page
+node3      | 2022/10/15 16:23:55 Il nodo corrente riceve token da: node1
+
+//Il node 3 riceve token ma va in down
+node1      | 2022/10/15 16:23:55 Il nodo corrente invia il token a: node3. Gli altri nodi della rete sono: map[node0:false node2:false node3:true]
+node3 exited with code 2
+
+//generazione nuovo token
+node1      | 2022/10/15 16:24:01 Nodi attualmente attivi: map[node0:false node2:false node3:true]
+node1      | 2022/10/15 16:24:10 Nodi attualmente attivi: map[node0:false node2:false node3:false]
+node1      | 2022/10/15 16:24:19 Nodi attualmente attivi: map[node0:false node2:false node3:false]
+node1      | 2022/10/15 16:24:27 Nodi attualmente attivi: map[node0:false node2:false node3:false]
+node1      | 2022/10/15 16:24:28 Il nodo corrente chiede creazione nuovo token.
+node1      | 2022/10/15 16:24:29 Il token checker riceve richiesta token da node1. Token generato?(true/false) true
+node1      | 2022/10/15 16:24:30 Leader genera nuovo token?(true/false) true
+node1      | 2022/10/15 16:24:37 Nodi attualmente attivi: map[node0:false node2:false node3:false]
+node1      | 2022/10/15 16:24:38 Il nodo corrente entra in sezione critica
+
+// solo il nodo 1 continuerà a scrivere
+node1      | 2022/10/15 16:24:38 Scrittura avvenuta correttamente sulla web page
+node1      | 2022/10/15 16:24:45 Nodi attualmente attivi: map[node0:false node2:false node3:false]
+node1      | 2022/10/15 16:24:46 Il nodo corrente entra in sezione critica
+node1      | 2022/10/15 16:24:47 Scrittura avvenuta correttamente sulla web page
+node1      | 2022/10/15 16:24:55 Nodi attualmente attivi: map[node0:false node2:false node3:false]
+node1      | 2022/10/15 16:24:56 Il nodo corrente entra in sezione critica
+node1      | 2022/10/15 16:24:56 Scrittura avvenuta correttamente sulla web page
+node1      | 2022/10/15 16:24:56 Nodi attualmente attivi: map[node0:false node2:false node3:false]
+node1      | 2022/10/15 16:24:57 Il nodo corrente entra in sezione critica
+node1      | 2022/10/15 16:24:57 Scrittura avvenuta correttamente sulla web page
+node1      | 2022/10/15 16:25:02 Nodi attualmente attivi: map[node0:false node2:false node3:false]
+node1      | 2022/10/15 16:25:03 Il nodo corrente entra in sezione critica
+node1      | 2022/10/15 16:25:03 Scrittura avvenuta correttamente sulla web page
+node1      | 2022/10/15 16:25:04 Nodi attualmente attivi: map[node0:false node2:false node3:false]
+node1      | 2022/10/15 16:25:05 Il nodo corrente entra in sezione critica

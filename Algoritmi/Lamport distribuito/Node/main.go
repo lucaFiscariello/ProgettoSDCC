@@ -19,6 +19,7 @@ import (
 	Log "fiscariello/luca/node/Logger"
 	pb "fiscariello/luca/node/stub"
 	"fmt"
+	"math/rand"
 	"os"
 	"strconv"
 	"time"
@@ -94,7 +95,7 @@ func main() {
 			i++
 		}
 
-		time.Sleep(4 * time.Second)
+		time.Sleep(time.Duration(rand.Intn(10)) * time.Second)
 		Log.Println("Nodi attualmente attivi: " + fmt.Sprint(handlerNode.GetNode()))
 
 	}
