@@ -66,7 +66,6 @@ node0      | 2022/10/15 16:41:30 Il leader autorizza il nodo node1 ad accedere a
 node1      | 2022/10/15 16:41:31 Il nodo corrente invia un ack al leader.
 node1      | 2022/10/15 16:41:31 Il nodo corrente ottiene autorizzazione dal leader.
 node1      | 2022/10/15 16:41:31 Il nodo corrente accede alla sezione critica
-webServer  | server invia L'ultima guerra tra il Ghiaccio e il Fuoco
 node0      | 2022/10/15 16:41:31 Il leader riceve l'ack dal nodo: node1
 node1      | 2022/10/15 16:41:32 Il nodo corrente rilascia l'autorizzazione
 node0      | 2022/10/15 16:41:32 Il leader riceve release dal nodo: node1
@@ -80,7 +79,6 @@ node0      | 2022/10/15 16:41:38 Il leader autorizza il nodo node1 ad accedere a
 node1      | 2022/10/15 16:41:39 Il nodo corrente invia un ack al leader.
 node1      | 2022/10/15 16:41:39 Il nodo corrente ottiene autorizzazione dal leader.
 node1      | 2022/10/15 16:41:39 Il nodo corrente accede alla sezione critica
-webServer  | server invia L’avventura di Georges Bataille sull’Etna
 node0      | 2022/10/15 16:41:39 Il leader riceve l'ack dal nodo: node1
 node1      | 2022/10/15 16:41:40 Il nodo corrente rilascia l'autorizzazione
 node0      | 2022/10/15 16:41:40 Il leader riceve release dal nodo: node1
