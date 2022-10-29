@@ -1,0 +1,52 @@
+---
+- hosts: all
+  tasks:
+    - name: Install git
+      become: yes
+      yum:
+         name: git
+         state: present
+         update_cache: yes
+
+
+    - name: install docker1
+      ansible.builtin.command:
+        cmd: "sudo mkdir -p $HOME/.docker/cli-plugins"
+
+    - name: install docker2
+      ansible.builtin.command:
+        cmd: "sudo curl -SL https://github.com/docker/compose/releases/download/v2.11.1/docker-compose-linux-x86_64 -o $HOME/.docker/cli-plugins/docker-compose"
+
+    - name: install docker3
+      ansible.builtin.command:
+        cmd: "sudo chmod +x $HOME/.docker/cli-plugins/docker-compose"
+
+    - name: remove if exist
+      ansible.builtin.command:
+        cmd: "rm -rf $HOME/ProgettoSDCC"
+
+    - name: clone repository
+      ansible.builtin.command:
+        cmd: "git clone https://github.com/lucaFiscariello/ProgettoSDCC.git"
+
+    - name: permission
+      ansible.builtin.command:
+        cmd: "sudo chmod 777 /home/ec2-user/.docker"
+
+    - name: copy systemd unit file
+      become: yes
+      copy: 
+          src: "app.service"
+          dest: "/etc/systemd/system/"
+
+    - name: enable and start systemd service
+      become: yes
+      systemd:
+           daemon_reload: yes
+           state: restarted
+           name: "app.service"
+           enabled: yes
+
+
+
+                                                                                                                                                                                                                51,0-1        Bot
