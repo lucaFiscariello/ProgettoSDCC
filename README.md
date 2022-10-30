@@ -6,32 +6,29 @@ In questa applicazione un certo numero di nodi concorre a popolare una pagina we
 e cercherà di pubblicare queste informazioni dinamicamente. In particolare ogni nodo vuole pubblicare una notizia per volta sulla pagina web ma tale scrittura non può avvenire in maniera concorrente. 
 Per questo motivo si rende necessario l'utilizzo di un algoritmo per la mutua esclusione che garantisce che un solo nodo per volta possa scrivere la propria notizia senza creare conflitti.
 
-## Mutua esclusione token distribuito
 
-### Esecuzione
+## Esecuzione Algoritmo Centralizzato o Lamport distribuito
 
 ```bash
-cd Algoritmi/Token Distribuito
+cd Algoritmi/LamportDistribuito
 docker compose up --build
 ```
 
-## Algoritmo Centralizzato
-
-### Esecuzione
-
 ```bash
-cd Algoritmi/Autorizzazione centralizzata
+cd Algoritmi/AutorizzazioneCentralizzata
 docker compose up --build
 ```
 
-## Lamport distribuito
+## Esecuzione Token distribuito
+L'algoritmo di token distributo è configurato per essere deployato su un istanza ec2. Con le configurazioni attuali non è possibile lanciarlo in locale. Il comando per lanciare l'algoritmo su un'istanza di ec2 è il seguente.
 
-### Esecuzione
+NB: è necessario fornire la propria chiave privata.
 
 ```bash
-cd Algoritmi/Lamport distribuito
-docker compose up --build
+cd Ansible
+ansible-playbook -v -i host.ini deploy.yaml
 ```
+
 
 ## Risultati
 
