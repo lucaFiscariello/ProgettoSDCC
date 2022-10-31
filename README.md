@@ -7,10 +7,10 @@ e cercherà di pubblicare queste informazioni dinamicamente. In particolare ogni
 Per questo motivo si rende necessario l'utilizzo di un algoritmo per la mutua esclusione che garantisce che un solo nodo per volta possa scrivere la propria notizia senza creare conflitti.
 
 
-## Esecuzione Algoritmo Centralizzato o Lamport distribuito
+## Esecuzione Algoritmo Centralizzato o Token distribuito
 
 ```bash
-cd Algoritmi/LamportDistribuito
+cd Algoritmi/TokenDistribuito
 docker compose up --build
 ```
 
@@ -19,8 +19,8 @@ cd Algoritmi/AutorizzazioneCentralizzata
 docker compose up --build
 ```
 
-## Esecuzione Token distribuito
-L'algoritmo di token distributo è configurato per essere deployato su un istanza ec2. Con le configurazioni attuali non è possibile lanciarlo in locale. Il comando per lanciare l'algoritmo su un'istanza di ec2 è il seguente.
+## Esecuzione Lamport distribuito
+L'algoritmo di Lamport distributo è configurato per essere deployato su un istanza ec2. Con le configurazioni attuali non è possibile lanciarlo in locale. Il comando per lanciare l'algoritmo su un'istanza di ec2 è il seguente.
 
 NB: è necessario fornire la propria chiave privata.
 
