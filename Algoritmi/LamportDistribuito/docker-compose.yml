@@ -110,7 +110,7 @@ services:
       build: ./Node
       environment:
           TIMEOUT : 20
-          TEMA : bitcoin
+          TEMA : sport
           ID_NODE : node3
           APIKEY : 621d12b7ec5940a380a2b9b249329ff9
           URLTEMPLATE : http://newsapi.org/v2/everything?q=%s&apiKey=%s&language=it 
