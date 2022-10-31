@@ -3,7 +3,7 @@ Description=Simple systemd service for our web application.
 
 [Service]
 Type=simple
-WorkingDirectory=/home/ec2-user/ProgettoSDCC/Algoritmi/TokenDistribuito
+WorkingDirectory=/home/ec2-user/ProgettoSDCC/Algoritmi/LamportDistribuito
 ExecStart=/home/ec2-user/.docker/cli-plugins/docker-compose up --build
 ExecStop=/bin/kill -TERM $MAINPID
 
